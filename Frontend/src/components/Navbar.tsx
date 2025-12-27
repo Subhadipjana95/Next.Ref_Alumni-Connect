@@ -100,24 +100,24 @@ const Navbar = () => {
   };
 
   return (
-    <header ref={navbarRef} className="fixed top-0 mx-auto z-40 w-full h-16 pt-6 transition-all" style={{ opacity: 0 }}>
-      <div className="fixed top-0 left-0 right-0 h-24 bg-gradient-to-b from-background via-background/50 to-transparent pointer-events-none z-0"></div>
-      <div className="container px-4 flex items-center justify-between relative z-10">
-        <div ref={logoRef} className="flex items-center gap-3" style={{ opacity: 0 }}>
-          <div className="w-8 h-8 rounded-sm gradient-primary flex items-center justify-center">
-            <GraduationCap className="w-6 h-6 text-secondary" />
+    <header ref={navbarRef} className="fixed top-0 mx-auto z-40 w-full h-14 sm:h-16 pt-4 sm:pt-6 transition-all" style={{ opacity: 0 }}>
+      <div className="fixed top-0 left-0 right-0 h-20 sm:h-24 bg-gradient-to-b from-background via-background/50 to-transparent pointer-events-none z-0"></div>
+      <div className="container px-3 sm:px-4 md:px-6 flex items-center justify-between relative z-10">
+        <div ref={logoRef} className="flex items-center gap-2 sm:gap-3" style={{ opacity: 0 }}>
+          <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-sm gradient-primary flex items-center justify-center">
+            <GraduationCap className="w-5 h-5 sm:w-6 sm:h-6 text-secondary" />
           </div>
           <div>
-            <h1 className="font-bold text-[#979797] text-2xl">
+            <h1 className="font-bold text-[#979797] text-xl sm:text-2xl">
               NextRef.
             </h1>
           </div>
         </div>
-        <div ref={navLinksRef} className="absolute left-1/2 -translate-x-1/2 mt-2 flex items-center space-x-8 bg-secondary px-5 py-[10px] rounded-lg border" style={{ opacity: 0 }}>
+        <div ref={navLinksRef} className="hidden sm:flex absolute left-1/2 -translate-x-1/2 mt-2 items-center space-x-4 md:space-x-8 bg-secondary px-3 md:px-5 py-[8px] md:py-[10px] rounded-lg border" style={{ opacity: 0 }}>
           {hasAuth ? (
             <button
               onClick={handleDashboardClick}
-              className={`text-md font-medium transition-colors cursor-pointer ${
+              className={`text-sm md:text-md font-medium transition-colors cursor-pointer ${
                 isDashboardPage
                   ? 'text-primary font-semibold' 
                   : 'text-muted-foreground hover:text-foreground'
@@ -128,7 +128,7 @@ const Navbar = () => {
           ) : (
             <NavLink 
               to="/" 
-              className="text-md font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="text-sm md:text-md font-medium text-muted-foreground hover:text-foreground transition-colors"
               activeClassName="text-primary font-semibold"
             >
               Home
@@ -136,28 +136,28 @@ const Navbar = () => {
           )}
           <NavLink 
             to="/about" 
-            className="text-md font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm md:text-md font-medium text-muted-foreground hover:text-foreground transition-colors"
             activeClassName="text-primary font-semibold"
           >
             About
           </NavLink>
         </div>
 
-        <div ref={authRef} className="flex items-center gap-3" style={{ opacity: 0 }}>
+        <div ref={authRef} className="flex items-center gap-2 sm:gap-3" style={{ opacity: 0 }}>
           {/* Show user info if authenticated via backend */}
           {isAuthenticated && user ? (
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-2 px-3 py-1.5 bg-secondary rounded-lg border">
-                <User className="w-4 h-4 text-muted-foreground" />
-                <span className="text-sm font-medium">{user.firstName}</span>
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <div className="hidden xs:flex items-center gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-secondary rounded-lg border">
+                <User className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-muted-foreground" />
+                <span className="text-xs sm:text-sm font-medium">{user.firstName}</span>
               </div>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={handleLogout}
-                className="text-muted-foreground hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground p-1.5 sm:p-2"
               >
-                <LogOut className="w-4 h-4" />
+                <LogOut className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </Button>
             </div>
           ) : (
