@@ -119,6 +119,9 @@ const studentSchema = new mongoose.Schema({
         type: Date,
       },
     },
+    githubUrl:{
+      type: String,
+    },
     profileCompleteness: {
       type: Number,
       default: 0,

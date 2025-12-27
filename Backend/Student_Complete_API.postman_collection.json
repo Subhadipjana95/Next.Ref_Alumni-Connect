@@ -1,0 +1,368 @@
+{
+	"info": {
+		"_postman_id": "student-api-collection",
+		"name": "Student Resume, LinkedIn & GitHub API",
+		"description": "API endpoints for managing student resumes, LinkedIn profiles, and GitHub URLs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{auth_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api/v1/student",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "YOUR_JWT_TOKEN_HERE",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Resume Routes",
+			"item": [
+				{
+					"name": "Upload Resume",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "resume",
+									"type": "file",
+									"src": [],
+									"description": "Upload a PDF file of your resume"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/resume/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resume",
+								"upload"
+							]
+						},
+						"description": "Upload resume PDF for the first time."
+					}
+				},
+				{
+					"name": "Update Resume",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "resume",
+									"type": "file",
+									"src": [],
+									"description": "Upload a new PDF file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/resume/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resume",
+								"update"
+							]
+						},
+						"description": "Replace existing resume."
+					}
+				},
+				{
+					"name": "Get Resume",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/resume",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resume"
+							]
+						},
+						"description": "Retrieve resume details."
+					}
+				},
+				{
+					"name": "Delete Resume",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/resume",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"resume"
+							]
+						},
+						"description": "Delete resume."
+					}
+				}
+			]
+		},
+		{
+			"name": "LinkedIn Routes",
+			"item": [
+				{
+					"name": "Upload LinkedIn",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "linkedIn",
+									"type": "file",
+									"src": [],
+									"description": "Upload LinkedIn profile PDF"
+								},
+								{
+									"key": "linkedInUrl",
+									"value": "https://www.linkedin.com/in/john-doe-123456",
+									"type": "text",
+									"description": "LinkedIn profile URL (optional)"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/linkedin/upload",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"linkedin",
+								"upload"
+							]
+						},
+						"description": "Upload LinkedIn PDF with optional URL."
+					}
+				},
+				{
+					"name": "Update LinkedIn URL",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"linkedInUrl\": \"https://www.linkedin.com/in/jane-smith-789012\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/linkedin/url",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"linkedin",
+								"url"
+							]
+						},
+						"description": "Update LinkedIn URL only."
+					}
+				},
+				{
+					"name": "Update LinkedIn PDF",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "linkedIn",
+									"type": "file",
+									"src": [],
+									"description": "Upload new LinkedIn PDF"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/linkedin/pdf",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"linkedin",
+								"pdf"
+							]
+						},
+						"description": "Update LinkedIn PDF only."
+					}
+				},
+				{
+					"name": "Get LinkedIn",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/linkedin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"linkedin"
+							]
+						},
+						"description": "Retrieve LinkedIn details."
+					}
+				},
+				{
+					"name": "Delete LinkedIn",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/linkedin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"linkedin"
+							]
+						},
+						"description": "Delete LinkedIn profile."
+					}
+				}
+			]
+		},
+		{
+			"name": "GitHub URL Routes",
+			"item": [
+				{
+					"name": "Add GitHub URL",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"githubUrl\": \"https://github.com/johndoe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/github",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"github"
+							]
+						},
+						"description": "Add GitHub URL for the first time."
+					}
+				},
+				{
+					"name": "Update GitHub URL",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"githubUrl\": \"https://github.com/janedoe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/github",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"github"
+							]
+						},
+						"description": "Update existing GitHub URL."
+					}
+				},
+				{
+					"name": "Get GitHub URL",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/github",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"github"
+							]
+						},
+						"description": "Retrieve GitHub URL."
+					}
+				},
+				{
+					"name": "Delete GitHub URL",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/github",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"github"
+							]
+						},
+						"description": "Delete GitHub URL."
+					}
+				}
+			]
+		}
+	]
+}
