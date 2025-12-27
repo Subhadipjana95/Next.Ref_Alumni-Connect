@@ -320,15 +320,15 @@ export function StudentDashboard() {
   };
 
   return (
-    <div className="space-y-6 mt-24">
+    <div className="space-y-4 sm:space-y-6 mt-20 sm:mt-24 px-4 sm:px-6 md:px-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex flex-col items-start justify-center">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 leading-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 leading-tight text-foreground">
             <span className="gradient-text2">Student </span>
             <span className="gradient-text3">Dashboard</span>
           </h1>
-          <p className="text-muted-foreground">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Upload your resume and apply for referrals
           </p>
         </div>
@@ -358,11 +358,11 @@ export function StudentDashboard() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+          <div className="mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
               Referral Opportunities from Alumni
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Connect with alumni from your college and get referred
             </p>
           </div>
@@ -384,11 +384,11 @@ export function StudentDashboard() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+          <div className="mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
               My Applications
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Track the status of your referral applications
             </p>
           </div>
@@ -405,11 +405,11 @@ export function StudentDashboard() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-foreground mb-2">
+          <div className="mb-4 sm:mb-6">
+            <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
               Browse Jobs from Around the World
             </h2>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Discover opportunities from global companies
             </p>
           </div>

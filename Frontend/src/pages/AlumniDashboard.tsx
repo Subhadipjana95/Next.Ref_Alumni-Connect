@@ -429,26 +429,26 @@ export function AlumniDashboard() {
   };
 
   return (
-    <div className="space-y-6 mt-24">
+    <div className="space-y-4 sm:space-y-6 mt-20 sm:mt-24 px-4 sm:px-6 md:px-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex flex-col items-start justify-center">
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 leading-tight text-foreground">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 leading-tight text-foreground">
               <span className="gradient-text2">Alumni </span> 
               <span className="gradient-text3">Dashboard</span>
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               {user ? `Welcome back, ${alumniName}!` : 'Create jobs and provide signed referrals to verified students'}
             </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-col xs:flex-row gap-2 w-full sm:w-auto">
           <Button variant="alumni" onClick={() => setShowCreateJob(true)}
-          className='text-background rounded-md hover:bg-muted-foreground bg-primary'>
+          className='text-background rounded-md hover:bg-muted-foreground bg-primary text-sm sm:text-base'>
             <Briefcase className="w-4 h-4" />
             Post Job
           </Button>
           <Button variant="success" onClick={() => setShowCreateReferral(true)}
-          className='text-background rounded-md bg-muted-foreground hover:bg-primary'>
+          className='text-background rounded-md bg-muted-foreground hover:bg-primary text-sm sm:text-base'>
             <Star className="w-4 h-4" />
             Post Referral
           </Button>
@@ -465,10 +465,10 @@ export function AlumniDashboard() {
 
       {/* Referrals Tab */}
       {activeTab === 'referrals' && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Backend Opportunities Section */}
           {isAuthenticated && (
-            <div className="grid lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <BackendOpportunitiesList
                 opportunities={backendOpportunities}
                 selectedOpportunity={selectedBackendOpportunity}
@@ -482,17 +482,17 @@ export function AlumniDashboard() {
               />
               <div className="bg-card rounded-xl border border-border/50">
                 {selectedBackendOpportunity ? (
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4 truncate">
                       Applications for "{selectedBackendOpportunity.jobTitle}"
                     </h3>
                     {!Array.isArray(selectedOpportunityApplications) || selectedOpportunityApplications.length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <Briefcase className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                        <p>No applications yet</p>
+                      <div className="text-center py-6 sm:py-8 text-muted-foreground">
+                        <Briefcase className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 opacity-50" />
+                        <p className="text-sm sm:text-base">No applications yet</p>
                       </div>
                     ) : (
-                      <div className="space-y-3 max-h-[600px] overflow-y-auto">
+                      <div className="space-y-2 sm:space-y-3 max-h-[400px] sm:max-h-[600px] overflow-y-auto">
                         {selectedOpportunityApplications.map((application) => (
                           <ApplicationCard
                             key={application._id}
@@ -508,8 +508,8 @@ export function AlumniDashboard() {
                     )}
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center h-full min-h-[300px] text-muted-foreground">
-                    <p>Select an opportunity to view applications</p>
+                  <div className="flex items-center justify-center h-full min-h-[200px] sm:min-h-[300px] text-sm sm:text-base text-muted-foreground px-4">
+                    <p className="text-center">Select an opportunity to view applications</p>
                   </div>
                 )}
               </div>
@@ -520,10 +520,10 @@ export function AlumniDashboard() {
       
       {/* Jobs Tab */}
       {activeTab === 'jobs' && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Backend Opportunities Section */}
           {isAuthenticated && (
-            <div className="grid lg:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               <BackendOpportunitiesList
                 opportunities={backendOpportunities}
                 selectedOpportunity={selectedBackendOpportunity}
@@ -537,17 +537,17 @@ export function AlumniDashboard() {
               />
               <div className="bg-card rounded-xl border border-border/50">
                 {selectedBackendOpportunity ? (
-                  <div className="p-6">
-                    <h3 className="text-lg font-semibold text-foreground mb-4">
+                  <div className="p-4 sm:p-6">
+                    <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4 truncate">
                       Applications for "{selectedBackendOpportunity.jobTitle}"
                     </h3>
                     {!Array.isArray(selectedOpportunityApplications) || selectedOpportunityApplications.length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground">
-                        <Briefcase className="w-12 h-12 mx-auto mb-3 opacity-50" />
-                        <p>No applications yet</p>
+                      <div className="text-center py-6 sm:py-8 text-muted-foreground">
+                        <Briefcase className="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-2 sm:mb-3 opacity-50" />
+                        <p className="text-sm sm:text-base">No applications yet</p>
                       </div>
                     ) : (
-                      <div className="space-y-3 max-h-[600px] overflow-y-auto">
+                      <div className="space-y-2 sm:space-y-3 max-h-[400px] sm:max-h-[600px] overflow-y-auto">
                         {selectedOpportunityApplications.map((application) => (
                           <ApplicationCard
                             key={application._id}
@@ -563,8 +563,8 @@ export function AlumniDashboard() {
                     )}
                   </div>
                 ) : (
-                  <div className="flex items-center justify-center h-full min-h-[300px] text-muted-foreground">
-                    <p>Select an opportunity to view applications</p>
+                  <div className="flex items-center justify-center h-full min-h-[200px] sm:min-h-[300px] text-sm sm:text-base text-muted-foreground px-4">
+                    <p className="text-center">Select an opportunity to view applications</p>
                   </div>
                 )}
               </div>
@@ -576,18 +576,18 @@ export function AlumniDashboard() {
 
       {/* Candidates Tab */}
       {activeTab === 'candidates' && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* Backend Candidates Section */}
           {isAuthenticated && backendOpportunities.length > 0 && (
-            <div className="bg-card rounded-xl border border-border/50 p-6">
-              <h3 className="text-lg font-semibold text-foreground mb-4">
+            <div className="bg-card rounded-xl border border-border/50 p-4 sm:p-6">
+              <h3 className="text-base sm:text-lg font-semibold text-foreground mb-3 sm:mb-4">
                 Candidates from Backend Opportunities
               </h3>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                 {backendOpportunities.map((opportunity) => (
-                  <div key={opportunity._id} className="border border-border/50 rounded-lg p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <h4 className="font-medium text-foreground">{opportunity.jobTitle}</h4>
+                  <div key={opportunity._id} className="border border-border/50 rounded-lg p-3 sm:p-4">
+                    <div className="flex flex-col xs:flex-row items-start xs:items-center justify-between gap-2 mb-2 sm:mb-3">
+                      <h4 className="font-medium text-sm sm:text-base text-foreground truncate">{opportunity.jobTitle}</h4>
                       <Button
                         size="sm"
                         variant="outline"
@@ -596,11 +596,12 @@ export function AlumniDashboard() {
                           loadApplicationsForOpportunity(opportunity._id);
                           setActiveTab('jobs');
                         }}
+                        className="text-xs sm:text-sm whitespace-nowrap w-full xs:w-auto"
                       >
                         View Applications
                       </Button>
                     </div>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       {opportunity.referralsGiven || 0} / {opportunity.numberOfReferrals} referrals given
                     </p>
                   </div>
@@ -611,12 +612,12 @@ export function AlumniDashboard() {
 
           {/* Empty State */}
           {(!isAuthenticated || backendOpportunities.length === 0) && (
-            <div className="bg-card rounded-xl p-12 border border-border/50 text-center">
-              <Briefcase className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-foreground mb-2">
+            <div className="bg-card rounded-xl p-6 sm:p-8 md:p-12 border border-border/50 text-center">
+              <Briefcase className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2">
                 No Candidates Yet
               </h3>
-              <p className="text-muted-foreground mb-4">
+              <p className="text-sm sm:text-base text-muted-foreground mb-3 sm:mb-4">
                 Post opportunities to start receiving applications from candidates
               </p>
               <Button 

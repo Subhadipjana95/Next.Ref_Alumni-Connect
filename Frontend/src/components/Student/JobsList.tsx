@@ -70,7 +70,7 @@ export function JobsList({ jobs, student, isApplying, onApply }: JobsListProps) 
               <p className="text-sm text-muted-foreground line-clamp-2">
                 {job.description}
               </p>
-              <span className="inline-block mt-3 px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary">
+              <span className="inline-block mt-3 px-3 py-1 rounded-lg text-xs font-medium bg-primary/10 text-primary">
                 {job.type}
               </span>
             </div>
