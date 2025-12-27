@@ -77,9 +77,9 @@ exports.viewStudentProfile = async (req, res) => {
         const alumniId = req.user.id;
         const { studentId } = req.params;
 
-        // Find student with full details
+        // Find student with full details (exclude password and resume binary data)
         const student = await Student.findById(studentId)
-            .select("-password")
+            .select("-password -resume.data -linkedIn.data")
             .populate('college', 'name matchingName');
         // console.log(student);
         // console.log("new ");
@@ -610,6 +610,65 @@ exports.getApplicationDetails = async (req, res) => {
         return res.status(500).json({
             success: false,
             message: "Failed to fetch application details. Please try again.",
+        });
+    }
+};
+
+// Download Student Resume (Alumni - same college)
+exports.downloadStudentResume = async (req, res) => {
+    try {
+        const alumniId = req.user.id;
+        const { studentId } = req.params;
+
+        // Find student with resume data
+        const student = await Student.findById(studentId)
+            .select('resume college')
+            .populate('college', 'matchingName');
+
+        if (!student) {
+            return res.status(404).json({
+                success: false,
+                message: "Student not found",
+            });
+        }
+
+        // Verify alumni is from same college
+        const alumni = await Alumni.findById(alumniId).populate('college', 'matchingName');
+        
+        if (!alumni || !alumni.college) {
+            return res.status(400).json({
+                success: false,
+                message: "Alumni college information not found",
+            });
+        }
+
+        if (student.college.matchingName !== alumni.college.matchingName) {
+            return res.status(403).json({
+                success: false,
+                message: "You can only download resumes of students from your college",
+            });
+        }
+
+        if (!student.resume || !student.resume.data) {
+            return res.status(404).json({
+                success: false,
+                message: "No resume found for this student",
+            });
+        }
+
+        // Set headers for PDF download
+        res.setHeader('Content-Type', student.resume.contentType);
+        res.setHeader('Content-Disposition', `attachment; filename="${student.resume.fileName}"`);
+        res.setHeader('Content-Length', student.resume.fileSize);
+
+        // Send the PDF file
+        return res.send(student.resume.data);
+
+    } catch (error) {
+        console.error("Download student resume error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to download resume. Please try again.",
         });
     }
 };

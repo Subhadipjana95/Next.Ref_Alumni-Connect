@@ -9,7 +9,9 @@ import { CreateJobModal } from '@/components/Alumni/CreateJobModal';
 import { PostReferralModal } from '@/components/Alumni/PostReferralModal';
 import { BackendOpportunitiesList } from '@/components/Alumni/BackendOpportunitiesList';
 import { EditOpportunityModal } from '@/components/Alumni/EditOpportunityModal';
-import { Briefcase, Plus, ArrowLeft, Star } from 'lucide-react';
+import { StudentProfileModal } from '@/components/Alumni/StudentProfileModal';
+import { ApplicationCard } from '@/components/Alumni/ApplicationCard';
+import { Briefcase, Plus, ArrowLeft, Star, Eye } from 'lucide-react';
 import { opportunitiesApi } from '@/services/opportunities';
 import { applicationsApi } from '@/services/applications';
 
@@ -25,6 +27,11 @@ export function AlumniDashboard() {
   const [showCreateReferral, setShowCreateReferral] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const [isCreatingReferral, setIsCreatingReferral] = useState(false);
+  
+  // Student Profile Modal state
+  const [showStudentProfile, setShowStudentProfile] = useState(false);
+  const [selectedStudentProfile, setSelectedStudentProfile] = useState<any>(null);
+  const [loadingStudentProfile, setLoadingStudentProfile] = useState(false);
 
   // Get alumni name from backend auth or default
   const alumniName = user ? `${user.firstName} ${user.lastName}` : 'Alumni';
@@ -34,7 +41,7 @@ export function AlumniDashboard() {
     title: '',
     company: alumniCompany || '',
     location: '',
-    type: 'full-time' as Job['type'],
+    type: 'full-time' as 'full-time' | 'part-time' | 'internship' | 'contract',
     description: '',
     requirements: '',
     vacancy: '',
@@ -77,12 +84,35 @@ export function AlumniDashboard() {
     }
   };
 
+  // Load student profile
+  const loadStudentProfile = async (studentId: string) => {
+    setLoadingStudentProfile(true);
+    setShowStudentProfile(true);
+    try {
+      const response = await applicationsApi.getStudentProfile(studentId);
+      if (response.success) {
+        setSelectedStudentProfile(response.data);
+      }
+    } catch (error: any) {
+      console.error('Failed to load student profile:', error);
+      showToast({
+        type: 'error',
+        message: error.response?.data?.message || 'Failed to load student profile',
+      });
+      setShowStudentProfile(false);
+    } finally {
+      setLoadingStudentProfile(false);
+    }
+  };
+
   // Load applications for a selected opportunity
   const loadApplicationsForOpportunity = async (opportunityId: string) => {
     try {
       const response = await applicationsApi.getApplicationsForOpportunity(opportunityId);
-      if (response.success && Array.isArray(response.data)) {
-        setSelectedOpportunityApplications(response.data);
+      if (response.success && response.data) {
+        // Backend returns { data: { all: [], grouped: {}, counts: {} } }
+        const applications = response.data.all || response.data;
+        setSelectedOpportunityApplications(Array.isArray(applications) ? applications : []);
       } else {
         setSelectedOpportunityApplications([]);
       }
@@ -461,76 +491,17 @@ export function AlumniDashboard() {
                         <p>No applications yet</p>
                       </div>
                     ) : (
-                      <div className="space-y-3">
+                      <div className="space-y-3 max-h-[600px] overflow-y-auto">
                         {selectedOpportunityApplications.map((application) => (
-                          <div 
+                          <ApplicationCard
                             key={application._id}
-                            className="bg-muted/50 rounded-lg p-4 border border-border"
-                          >
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h4 className="font-medium text-foreground">
-                                  {application.student.firstName} {application.student.lastName}
-                                </h4>
-                                <p className="text-sm text-muted-foreground">
-                                  {application.student.email}
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  {application.student.department} • {application.student.graduationYear}
-                                </p>
-                              </div>
-                              <span className={cn(
-                                "text-xs px-2 py-1 rounded-full",
-                                application.status === 'pending' && "bg-yellow-500/10 text-yellow-500",
-                                application.status === 'shortlisted' && "bg-blue-500/10 text-blue-500",
-                                application.status === 'referred' && "bg-success/10 text-success",
-                                application.status === 'rejected' && "bg-destructive/10 text-destructive"
-                              )}>
-                                {application.status}
-                              </span>
-                            </div>
-                            
-                            {application.status === 'pending' && (
-                              <div className="flex gap-2 mt-3">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleShortlistBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="flex-1"
-                                >
-                                  Shortlist
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleRejectBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="flex-1 text-destructive hover:text-destructive"
-                                >
-                                  Reject
-                                </Button>
-                              </div>
-                            )}
-                            
-                            {application.status === 'shortlisted' && (
-                              <div className="flex gap-2 mt-3">
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleReferBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="flex-1 bg-success text-background hover:bg-success/90"
-                                >
-                                  Provide Referral
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleRejectBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="text-destructive hover:text-destructive"
-                                >
-                                  Reject
-                                </Button>
-                              </div>
-                            )}
-                          </div>
+                            application={application}
+                            opportunityId={selectedBackendOpportunity._id}
+                            onViewProfile={loadStudentProfile}
+                            onShortlist={handleShortlistBackend}
+                            onReject={handleRejectBackend}
+                            onRefer={handleReferBackend}
+                          />
                         ))}
                       </div>
                     )}
@@ -575,76 +546,17 @@ export function AlumniDashboard() {
                         <p>No applications yet</p>
                       </div>
                     ) : (
-                      <div className="space-y-3">
+                      <div className="space-y-3 max-h-[600px] overflow-y-auto">
                         {selectedOpportunityApplications.map((application) => (
-                          <div 
+                          <ApplicationCard
                             key={application._id}
-                            className="bg-muted/50 rounded-lg p-4 border border-border"
-                          >
-                            <div className="flex items-start justify-between mb-2">
-                              <div>
-                                <h4 className="font-medium text-foreground">
-                                  {application.student.firstName} {application.student.lastName}
-                                </h4>
-                                <p className="text-sm text-muted-foreground">
-                                  {application.student.email}
-                                </p>
-                                <p className="text-xs text-muted-foreground mt-1">
-                                  {application.student.department} • {application.student.graduationYear}
-                                </p>
-                              </div>
-                              <span className={cn(
-                                "text-xs px-2 py-1 rounded-full",
-                                application.status === 'pending' && "bg-yellow-500/10 text-yellow-500",
-                                application.status === 'shortlisted' && "bg-blue-500/10 text-blue-500",
-                                application.status === 'referred' && "bg-success/10 text-success",
-                                application.status === 'rejected' && "bg-destructive/10 text-destructive"
-                              )}>
-                                {application.status}
-                              </span>
-                            </div>
-                            
-                            {application.status === 'pending' && (
-                              <div className="flex gap-2 mt-3">
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleShortlistBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="flex-1"
-                                >
-                                  Shortlist
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleRejectBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="flex-1 text-destructive hover:text-destructive"
-                                >
-                                  Reject
-                                </Button>
-                              </div>
-                            )}
-                            
-                            {application.status === 'shortlisted' && (
-                              <div className="flex gap-2 mt-3">
-                                <Button
-                                  size="sm"
-                                  onClick={() => handleReferBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="flex-1 bg-success text-background hover:bg-success/90"
-                                >
-                                  Provide Referral
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={() => handleRejectBackend(application._id, selectedBackendOpportunity._id)}
-                                  className="text-destructive hover:text-destructive"
-                                >
-                                  Reject
-                                </Button>
-                              </div>
-                            )}
-                          </div>
+                            application={application}
+                            opportunityId={selectedBackendOpportunity._id}
+                            onViewProfile={loadStudentProfile}
+                            onShortlist={handleShortlistBackend}
+                            onReject={handleRejectBackend}
+                            onRefer={handleReferBackend}
+                          />
                         ))}
                       </div>
                     )}
@@ -749,6 +661,17 @@ export function AlumniDashboard() {
         opportunity={selectedBackendOpportunity}
         onSubmit={handleUpdateOpportunity}
         isUpdating={isUpdatingOpportunity}
+      />
+
+      {/* Student Profile Modal */}
+      <StudentProfileModal
+        isOpen={showStudentProfile}
+        onClose={() => {
+          setShowStudentProfile(false);
+          setSelectedStudentProfile(null);
+        }}
+        student={selectedStudentProfile}
+        loading={loadingStudentProfile}
       />
     </div>
   );

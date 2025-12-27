@@ -130,6 +130,16 @@ function AppContent() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/student/applied"
+          element={
+            <ProtectedRoute requiredRole="student">
+              <DashboardLayout>
+                <StudentDashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
 
         {/* Alumni Dashboard */}
         <Route

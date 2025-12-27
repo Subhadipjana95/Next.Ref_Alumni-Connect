@@ -92,12 +92,17 @@ export interface MyApplication {
     jobTitle: string;
     roleDescription: string;
     experienceLevel: string;
-    postedBy: {
-      firstName: string;
-      lastName: string;
-      company: string;
-      designation: string;
-    };
+    requiredSkills?: string[];
+    status: string;
+  };
+  alumni: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+    email: string;
+    company: string;
+    currentRole: string;
+    image?: string;
   };
   status: string;
   appliedAt: string;
@@ -106,8 +111,23 @@ export interface MyApplication {
 
 export interface MyApplicationsResponse {
   success: boolean;
-  count: number;
-  data: MyApplication[];
+  data: {
+    applications: MyApplication[];
+    statusSummary: {
+      applied: number;
+      shortlisted: number;
+      referred: number;
+      rejected: number;
+    };
+    pagination: {
+      currentPage: number;
+      totalPages: number;
+      totalApplications: number;
+      hasNextPage: boolean;
+      hasPrevPage: boolean;
+    };
+  };
+  message: string;
 }
 
 export interface CreateOpportunityPayload {
