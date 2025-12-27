@@ -51,7 +51,9 @@ const WorkProcess = React.memo(() => {
               trigger: connector1Ref.current,
               start: "top 85%",
               end: "bottom 35%",
-              scrub: 1,
+              scrub: 2,
+              fastScrollEnd: true,
+              invalidateOnRefresh: false,
             },
           });
         }
@@ -74,7 +76,9 @@ const WorkProcess = React.memo(() => {
               trigger: connector2Ref.current,
               start: "top 85%",
               end: "bottom 35%",
-              scrub: 1,
+              scrub: 2,
+              fastScrollEnd: true,
+              invalidateOnRefresh: false,
             },
           });
         }
@@ -87,8 +91,14 @@ const WorkProcess = React.memo(() => {
   return (
     <div
       ref={sectionRef}
-      className="rounded-2xl p-8 overflow-x-hidden mb-20"
-    >
+      className="rounded-2xl p-8 mb-20 relative overflow-visible"
+    >      
+    <img 
+        src="/Side-BG3.png" 
+        alt="Background decoration"
+        className="absolute right-[55rem] top-[55%] -translate-y-1/2 pointer-events-none z-0"
+        loading="lazy"
+      />      
       <div className="mb-10 mx-auto text-center">
         <h1 
           ref={headingRef}
@@ -115,7 +125,7 @@ const WorkProcess = React.memo(() => {
               alt={"Student Build Profile and Upload Resume"}
               loading="lazy"
               decoding="async"
-              className="absolute w-full h-full rounded-lg object-fill object-center z-0"
+              className="absolute w-full h-full rounded-xl object-fill object-center z-0 border"
             />
           </div>
           <div className="col-span-1 w-[60%] flex flex-col justify-end items-start">
@@ -187,7 +197,7 @@ const WorkProcess = React.memo(() => {
               College authority verifies authenticity of credentials
             </p>
           </div>
-          <div className="col-span-1 h-full w-[32rem] aspect-[4/5] rounded-lg relative overflow-hidden flex justify-end items-center">
+          <div className="col-span-1 h-full w-[32rem] aspect-[4/5] relative overflow-hidden flex justify-end items-center border rounded-xl">
             <img
               src={"/W2.png"}
               alt={"Student Build Profile and Upload Resume"}
@@ -233,7 +243,7 @@ const WorkProcess = React.memo(() => {
               alt={"Alumni Refers Based on Verified Credentials"}
               loading="lazy"
               decoding="async"
-              className="absolute w-full h-full rounded-lg object-fill object-center z-0"
+              className="border rounded-xl absolute w-full h-full object-fill object-center z-0"
             />
           </div>
           <div className="col-span-1 w-[60%] flex flex-col justify-end items-start">

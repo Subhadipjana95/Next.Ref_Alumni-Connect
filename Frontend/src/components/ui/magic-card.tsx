@@ -26,6 +26,9 @@ export function MagicCard({
 }: MagicCardProps) {
   const mouseX = useMotionValue(-gradientSize)
   const mouseY = useMotionValue(-gradientSize)
+  const isScrollingRef = React.useRef(false)
+  const scrollTimeoutRef = React.useRef<NodeJS.Timeout>()
+  
   const reset = useCallback(() => {
     mouseX.set(-gradientSize)
     mouseY.set(-gradientSize)
@@ -33,6 +36,7 @@ export function MagicCard({
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
+      if (isScrollingRef.current) return
       const rect = e.currentTarget.getBoundingClientRect()
       mouseX.set(e.clientX - rect.left)
       mouseY.set(e.clientY - rect.top)
@@ -56,15 +60,31 @@ export function MagicCard({
         reset()
       }
     }
+    
+    const handleScroll = () => {
+      isScrollingRef.current = true
+      reset()
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
+      scrollTimeoutRef.current = setTimeout(() => {
+        isScrollingRef.current = false
+      }, 150)
+    }
 
-    window.addEventListener("pointerout", handleGlobalPointerOut)
-    window.addEventListener("blur", reset)
-    document.addEventListener("visibilitychange", handleVisibility)
+    window.addEventListener("pointerout", handleGlobalPointerOut, { passive: true })
+    window.addEventListener("blur", reset, { passive: true })
+    window.addEventListener("scroll", handleScroll, { passive: true, capture: true })
+    document.addEventListener("visibilitychange", handleVisibility, { passive: true })
 
     return () => {
       window.removeEventListener("pointerout", handleGlobalPointerOut)
       window.removeEventListener("blur", reset)
+      window.removeEventListener("scroll", handleScroll, true)
       document.removeEventListener("visibilitychange", handleVisibility)
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current)
+      }
     }
   }, [reset])
 

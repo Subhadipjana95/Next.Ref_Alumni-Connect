@@ -30,6 +30,7 @@ const Features = React.memo(() => {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const descRef = useRef<HTMLParagraphElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const bgImageRef = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -102,23 +103,7 @@ const Features = React.memo(() => {
         }
       );
 
-      // Subtle parallax effect on cards - heavily optimized
-      cardsRef.current.forEach((card, index) => {
-        if (card) {
-          gsap.to(card, {
-            y: -30 * (index % 2 === 0 ? 1 : -1),
-            ease: "none",
-            force3D: true,
-            scrollTrigger: {
-              trigger: card,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 0.5,
-              fastScrollEnd: true,
-            },
-          });
-        }
-      });
+      // Parallax effects disabled for better performance
     });
 
     return () => ctx.revert();
@@ -127,8 +112,15 @@ const Features = React.memo(() => {
   return (
     <div
       ref={sectionRef}
-      className="mb-36 min-h-[600px] w-full px-4 mx-auto text-center"
+      className="mb-36 min-h-[600px] w-full px-4 mx-auto text-center relative"
     >
+      <img 
+        ref={bgImageRef}
+        src="/Side-BG2.png" 
+        alt="Background decoration"
+        className="absolute -bottom-[100%] left-[65%] pointer-events-none z-0"
+        loading="lazy"
+      />
       <h1
         ref={headingRef}
         className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-foreground"

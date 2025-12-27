@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/Auth/AuthContext';
+import { useAuth } from '@/services/Auth/AuthContext';
 import { Student } from '@/lib/types';
 import { storage } from '@/lib/storage';
 import { VerifierStats } from '@/components/Verifier/VerifierStats';

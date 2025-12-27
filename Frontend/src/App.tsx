@@ -4,10 +4,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeProvider } from "@/contexts/ThemeContext";
-import { AuthProvider } from "@/Auth";
+import { AuthProvider } from "@/services/Auth";
 import Index from "@/pages/Index";
 import { useEffect } from "react";
 import Lenis from "lenis";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const queryClient = new QueryClient();
 
@@ -15,13 +16,15 @@ const App = () => {
   // Initialize Lenis for site-wide smooth scrolling
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.0,
+      duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      smoothTouch: false, // Disable smooth scrolling on touch to prevent mobile issues
+      smooth: true,
+      mouseMultiplier: 1,
       touchMultiplier: 2,
-      infinite: false,
     });
+
+    // Integrate Lenis with GSAP ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
 
     function raf(time: number) {
       lenis.raf(time);

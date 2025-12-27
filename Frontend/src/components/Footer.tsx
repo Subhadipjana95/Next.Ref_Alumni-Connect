@@ -19,10 +19,10 @@ const Footer = () => {
             </div>
             <div className="space-y-1 mb-8">
               <p className="text-primary-foreground/90 text-lg font-medium">
-                Blockchain-Powered Referrals
+                Trustworthy Referrals
               </p>
               <p className="text-accent-foreground text-md leading-tight tracking-tight">
-                Verified resumes and trustworthy referrals based on transparent on-chain credentials.
+                Verified resumes referrals based on transparent credentials.
               </p>
             </div>
           </div>
@@ -31,7 +31,7 @@ const Footer = () => {
               Built with trust on
             </p>
             <p className="text-background font-semibold text-2xl">
-              Aptos Blockchain
+              Next Gen Analysis Model 
             </p>
           </div>
         </div>
@@ -74,7 +74,7 @@ const Footer = () => {
                 <h3 className="text-foreground font-semibold mb-4">Contact Info</h3>
                 <div className="space-y-2 text-md text-muted-foreground">
                   <p>Email: hello@nextref.io</p>
-                  <p>Location: Decentralized</p>
+                  <p>Location: Kolkata, India</p>
                 </div>
               </div>
             </div>
@@ -108,7 +108,7 @@ const Footer = () => {
             {/* Bottom Right - Copyright */}
             <div className="flex items-end justify-end">
               <p className="text-sm text-muted-foreground">
-                Built with 💚 by Team COSMO BLOCKS.
+                Built with 💚 by Team <b>CODE KINETICS</b>⚡
               </p>
             </div>
           </div>

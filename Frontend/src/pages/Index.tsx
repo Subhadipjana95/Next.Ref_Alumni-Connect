@@ -7,15 +7,13 @@ import { VerifierDashboard } from '@/pages/VerifierDashboard';
 import NotFound from '@/pages/NotFound';
 import { RoleSelector } from '@/pages/RoleSelector';
 import Navbar from '@/components/Navbar';
-import { useAuth } from '@/Auth/AuthContext';
-import {
-  StudentLoginPage,
-  StudentSignupPage,
-  AlumniLoginPage,
-  AlumniSignupPage,
-  VerifierLoginPage,
-  VerifierSignupPage,
-} from '@/Auth/pages';
+import { useAuth } from '@/services/Auth/AuthContext';
+import { StudentLoginPage } from '@/components/Student/Auth/StudentLogin';
+import { StudentSignupPage } from '@/components/Student/Auth/StudentSignup';
+import { AlumniLoginPage } from '@/components/Alumni/Auth/AlumniLogin';
+import { AlumniSignupPage } from '@/components/Alumni/Auth/AlumniSignup';
+import { VerifierLoginPage } from '@/components/Verifier/Auth/VerifierLogin';
+import { VerifierSignupPage } from '@/components/Verifier/Auth/VerifierSignup';
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
