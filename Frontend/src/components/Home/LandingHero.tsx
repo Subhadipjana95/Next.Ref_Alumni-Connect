@@ -75,7 +75,6 @@ const LandingHero = React.memo(() => {
           "-=0.4"
         );
 
-      // Lower hero with parallax and scale effect
       gsap.fromTo(
         lowerHeroRef.current,
         { opacity: 0 },
@@ -95,7 +94,6 @@ const LandingHero = React.memo(() => {
         }
       );
 
-      // Image container initial scale animation
       gsap.fromTo(
         imageContainerRef.current,
         { scale: 1 },
@@ -113,7 +111,6 @@ const LandingHero = React.memo(() => {
         }
       );
 
-      // Simplified single parallax effect for better performance
       gsap.to(imageContainerRef.current, {
         y: -30,
         scale: 1.05,
@@ -160,7 +157,7 @@ const LandingHero = React.memo(() => {
           />
           <Blocks className="w-3 h-3 sm:w-4 sm:h-4" />
           <span className="hidden xs:inline">Secure Tech</span>
-          <span className="xs:hidden">Powered by Next-Gen NLP</span>
+          <span className="xs:hidden">Powered by Next Gen NLP</span>
         </div>
         <h1
           ref={headingRef}
