@@ -1,29 +1,5 @@
 const Student = require("../models/StudentModel");
-
-// Helper function to calculate profile completeness
-function calculateProfileCompleteness(student) {
-    let score = 0;
-    const fields = [
-        { field: student.firstName, weight: 8 },
-        { field: student.lastName, weight: 8 },
-        { field: student.email, weight: 8 },
-        { field: student.image, weight: 4 },
-        { field: student.college, weight: 12 },
-        { field: student.branch, weight: 10 },
-        { field: student.graduationYear, weight: 10 },
-        { field: student.skills && student.skills.length > 0, weight: 10 },
-        { field: student.projects && student.projects.length > 0, weight: 10 },
-        { field: student.certifications && student.certifications.length > 0, weight: 5 },
-        { field: student.preferredRoles && student.preferredRoles.length > 0, weight: 5 },
-        { field: student.resume && student.resume.url, weight: 10 },
-    ];
-
-    fields.forEach(({ field, weight }) => {
-        if (field) score += weight;
-    });
-
-    return score;
-}
+const { calculateProfileCompleteness } = require("../utils/calculateProfileScore");
 
 // Create / Update Profile
 exports.updateProfile = async (req, res) => {
@@ -150,7 +126,10 @@ exports.getProfileStatus = async (req, res) => {
         if (!student.projects || student.projects.length === 0) missingFields.push("projects");
         if (!student.certifications || student.certifications.length === 0) missingFields.push("certifications");
         if (!student.preferredRoles || student.preferredRoles.length === 0) missingFields.push("preferredRoles");
-        if (!student.resume || !student.resume.url) missingFields.push("resume");
+        if (!student.resume || !student.resume.data) missingFields.push("resume");
+        if (!student.linkedIn || !student.linkedIn.data) missingFields.push("linkedInPdf");
+        if (!student.linkedIn || !student.linkedIn.linkedInUrl) missingFields.push("linkedInUrl");
+        if (!student.githubUrl) missingFields.push("githubUrl");
 
         // Determine profile strength
         let strength = "Weak";
@@ -171,7 +150,9 @@ exports.getProfileStatus = async (req, res) => {
                     projects: student.projects && student.projects.length > 0 ? "Complete" : "Incomplete",
                     certifications: student.certifications && student.certifications.length > 0 ? "Complete" : "Incomplete",
                     preferredRoles: student.preferredRoles && student.preferredRoles.length > 0 ? "Complete" : "Incomplete",
-                    resume: student.resume && student.resume.url ? "Complete" : "Incomplete",
+                    resume: student.resume && student.resume.data ? "Complete" : "Incomplete",
+                    linkedIn: student.linkedIn && (student.linkedIn.data || student.linkedIn.linkedInUrl) ? "Complete" : "Incomplete",
+                    github: student.githubUrl ? "Complete" : "Incomplete",
                 }
             },
             message: "Profile status fetched successfully",

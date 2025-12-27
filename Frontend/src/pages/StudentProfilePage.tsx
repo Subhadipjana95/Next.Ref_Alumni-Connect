@@ -10,6 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, Save, TrendingUp, CheckCircle2, AlertCircle, Plus, X } from 'lucide-react';
 import { studentProfileApi, StudentProfile, ProfileStatusResponse, Project, Certification } from '@/services/studentProfile';
 import { showTransactionToast, dismissToast } from '@/components/TransactionToast';
+// Import new profile section components
+import { ResumeSection } from '@/components/Student/ResumeSection';
+import { LinkedInSection } from '@/components/Student/LinkedInSection';
+import { GitHubSection } from '@/components/Student/GitHubSection';
 
 export function StudentProfilePage() {
   const navigate = useNavigate();
@@ -74,6 +78,13 @@ export function StudentProfilePage() {
     } catch (error) {
       console.error('Error fetching profile status:', error);
     }
+  };
+
+  /**
+   * Refresh profile data - called after resume/linkedin/github changes
+   */
+  const refreshProfile = async () => {
+    await Promise.all([fetchProfile(), fetchProfileStatus()]);
   };
 
   const handleSaveProfile = async () => {
@@ -439,6 +450,30 @@ export function StudentProfilePage() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Documents & Links Section */}
+      <div className="space-y-4">
+        <h2 className="text-xl font-semibold text-foreground">Documents & Links</h2>
+        <div className="grid lg:grid-cols-3 gap-6">
+          {/* Resume Section */}
+          <ResumeSection 
+            resume={profile?.resume} 
+            onResumeChange={refreshProfile} 
+          />
+
+          {/* LinkedIn Section */}
+          <LinkedInSection 
+            linkedIn={profile?.linkedIn} 
+            onLinkedInChange={refreshProfile} 
+          />
+
+          {/* GitHub Section */}
+          <GitHubSection 
+            githubUrl={profile?.githubUrl} 
+            onGitHubChange={refreshProfile} 
+          />
+        </div>
       </div>
 
       {/* Save Button */}
