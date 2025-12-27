@@ -53,6 +53,7 @@ export interface Opportunity {
     designation: string;
   };
   college: string;
+  status: 'Open' | 'Closed';
   isActive: boolean;
   createdAt: string;
   updatedAt: string;

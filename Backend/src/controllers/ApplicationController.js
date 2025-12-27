@@ -219,6 +219,15 @@ exports.markAsReferred = async (req, res) => {
             });
         }
 
+        // Check if referrals are still available
+        const opportunity = await Opportunity.findById(application.opportunity._id);
+        if (opportunity.referralsGiven >= opportunity.numberOfReferrals) {
+            return res.status(400).json({
+                success: false,
+                message: "No more referral slots available for this opportunity",
+            });
+        }
+
         // Update application status
         application.status = "Referred";
         application.referredAt = new Date();
@@ -229,6 +238,15 @@ exports.markAsReferred = async (req, res) => {
         }
 
         await application.save();
+
+        // Increment referralsGiven on the opportunity
+        opportunity.referralsGiven += 1;
+        
+        // Auto-close opportunity if all referral slots are filled
+        if (opportunity.referralsGiven >= opportunity.numberOfReferrals) {
+            opportunity.status = "Closed";
+        }
+        await opportunity.save();
 
         return res.status(200).json({
             success: true,
@@ -326,8 +344,8 @@ exports.applyForReferral = async (req, res) => {
             });
         }
 
-        // Check if resume is uploaded
-        if (!student.resume || !student.resume.url) {
+        // Check if resume is uploaded (resume is stored as binary data in MongoDB)
+        if (!student.resume || !student.resume.data) {
             return res.status(400).json({
                 success: false,
                 message: "Please upload your resume before applying for referrals",
@@ -358,6 +376,14 @@ exports.applyForReferral = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "This opportunity is no longer accepting applications",
+            });
+        }
+
+        // Check if referral slots are still available
+        if (opportunity.referralsGiven >= opportunity.numberOfReferrals) {
+            return res.status(400).json({
+                success: false,
+                message: "All referral slots for this opportunity have been filled",
             });
         }
 
@@ -400,10 +426,11 @@ exports.applyForReferral = async (req, res) => {
             profileCompleteness: student.profileCompleteness,
         };
 
-        // Create resume snapshot
+        // Create resume snapshot (store reference info, not actual binary data)
         const resumeSnapshot = {
-            url: student.resume.url,
-            public_id: student.resume.public_id,
+            fileName: student.resume.fileName,
+            fileSize: student.resume.fileSize,
+            contentType: student.resume.contentType,
             uploadedAt: student.resume.uploadedAt,
         };
 

@@ -83,7 +83,7 @@ const studentSchema = new mongoose.Schema({
       trim: true,
     }],
     resume: {
-      data: {
+      data: { 
         type: Buffer,
       },
       contentType: {
