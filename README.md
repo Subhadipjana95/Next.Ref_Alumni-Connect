@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://res.cloudinary.com/dfjuuwtr6/image/upload/v1766874786/Screenshot_2025-12-28_040242_g4dvlu.png" alt="NextRef Alumni Connect Banner" style="border-radius: 12px; width: 100%;" />
+<img src="https://res.cloudinary.com/dfjuuwtr6/image/upload/v1766874786/Screenshot_2025-12-28_040242_g4dvlu.png" alt="NextRef Alumni Connect Banner" style="border-radius: 12px; width: 100%; border: 1px solid #3B4E45" />
 
 # 🎓 NextRef - Alumni Connect
 
