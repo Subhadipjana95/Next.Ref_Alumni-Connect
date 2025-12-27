@@ -112,31 +112,31 @@ const Features = React.memo(() => {
   return (
     <div
       ref={sectionRef}
-      className="mb-36 min-h-[600px] w-full px-4 mx-auto text-center relative"
+      className="mb-20 sm:mb-28 md:mb-36 min-h-[400px] sm:min-h-[500px] md:min-h-[600px] w-full px-4 sm:px-6 lg:px-8 mx-auto text-center relative"
     >
       <img 
         ref={bgImageRef}
         src="/Side-BG2.png" 
         alt="Background decoration"
-        className="absolute -bottom-[100%] left-[65%] pointer-events-none z-0"
+        className="absolute -bottom-[100%] left-[65%] pointer-events-none z-0 hidden lg:block"
         loading="lazy"
       />
       <h1
         ref={headingRef}
-        className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-foreground"
+        className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight text-foreground px-2"
         style={{ opacity: 0 }}
       >
         Features <span className="gradient-text3">that Feels </span>Human
       </h1>
       <p
         ref={descRef}
-        className="text-lg text-muted-foreground max-w-2xl mx-auto mb-10 tracking-tight"
+        className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-8 sm:mb-10 tracking-tight px-4"
         style={{ opacity: 0 }}
       >
         NextRef amplifies human insight and recommendations, to help incredible
         people find each other.
       </p>
-      <div className="grid sm:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 max-w-7xl mx-auto">
         {features.map((feature, index) => {
           const Image = feature.image;
           return (
@@ -144,10 +144,10 @@ const Features = React.memo(() => {
                 key={feature.title}
                 ref={(el) => (cardsRef.current[index] = el)}
                 style={{ opacity: 0, transform: "translateZ(0)" }}
-                className="w-full h-96"
+                className="w-full h-80 sm:h-96"
               >
                 <MagicCard
-                  className="w-full h-full rounded-xl p-2"
+                  className="w-full h-full rounded-xl p-1.5 sm:p-2"
                   gradientSize={250}
                   gradientColor="oklch(74.443% 0.00008 271.152)"
                   gradientOpacity={0.6}
@@ -163,11 +163,11 @@ const Features = React.memo(() => {
                       className="absolute inset-0 w-full h-full rounded-lg object-cover object-center"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent pointer-events-none"></div>
-                    <div className="absolute inset-0 flex flex-col items-start justify-end px-4 pb-4">
-                      <h3 className="font-bold text-2xl text-white mb-1">
+                    <div className="absolute inset-0 flex flex-col items-start justify-end px-3 sm:px-4 pb-3 sm:pb-4">
+                      <h3 className="font-bold text-xl sm:text-2xl text-white mb-1">
                         {feature.title}
                       </h3>
-                      <p className="text-sm text-white/90">
+                      <p className="text-xs sm:text-sm text-white/90">
                         {feature.description}
                       </p>
                     </div>

@@ -68,7 +68,7 @@ export function RoleSelector() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-10"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold  mb-4 leading-tight text-foreground">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-foreground">
             Select
             <span className="gradient-text3"> Your</span>
             <span className="gradient-text2"> Role</span>
@@ -87,11 +87,11 @@ export function RoleSelector() {
                 transition={{ delay: index * 0.1 }}
                 onClick={() => handleRoleSelect(role.id)}
                 className={cn(
-                  "group relative p-3 rounded-md bg-card border-2 border-border/50",
+                  "group relative p-2 rounded-xl bg-card border-2 border-border/50",
                   "hover:border-primary/50 hover:shadow-lg transition-all duration-300"
                 )}
               >
-                <div className="relative bg-background rounded-sm overflow-hidden border min-h-[400px] flex flex-col justify-end">
+                <div className="relative bg-background rounded-lg overflow-hidden border-2 min-h-[400px] flex flex-col justify-end">
                   {/* Image */}
                   <div className="absolute inset-0 w-full h-full">
                     <img

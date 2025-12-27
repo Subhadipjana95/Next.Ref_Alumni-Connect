@@ -91,35 +91,35 @@ const WorkProcess = React.memo(() => {
   return (
     <div
       ref={sectionRef}
-      className="rounded-2xl p-8 mb-20 relative overflow-visible"
+      className="rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mb-16 sm:mb-20 relative overflow-visible"
     >      
     <img 
         src="/Side-BG3.png" 
         alt="Background decoration"
-        className="absolute right-[55rem] top-[55%] -translate-y-1/2 pointer-events-none z-0"
+        className="absolute right-[55rem] top-[55%] -translate-y-1/2 pointer-events-none z-0 hidden xl:block"
         loading="lazy"
       />      
-      <div className="mb-10 mx-auto text-center">
+      <div className="mb-8 sm:mb-10 md:mb-12 mx-auto text-center">
         <h1 
           ref={headingRef}
-          className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 leading-tight text-foreground"
+          className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 leading-tight text-foreground px-2"
           style={{ opacity: 0 }}
         >
           How <span className="gradient-text3">NextRef </span>works
         </h1>
         <p 
           ref={descRef}
-          className="text-lg text-muted-foreground max-w-2xl mx-auto mb-20 tracking-tight"
+          className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-12 sm:mb-16 md:mb-20 tracking-tight px-4"
           style={{ opacity: 0 }}
         >
           NextRef connects incredible people to opportunities. It's for
           people hiring, connecting others, or even job-seeking themselves.
         </p>
       </div>
-      <div className="flex flex-col gap-8">
+      <div className="flex flex-col gap-6 sm:gap-8 md:gap-10">
         {/* Process 1 */}
-        <div className="process1 h-[28rem] grid grid-cols-2 gap-6">
-          <div className="col-span-1 h-full w-[32rem] aspect-[4/5] rounded-lg relative overflow-hidden flex justify-end items-center ml-12">
+        <div className="process1 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:h-[28rem]">
+          <div className="w-full max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-[32rem] aspect-[4/5] lg:aspect-auto lg:h-full rounded-lg relative overflow-hidden flex justify-center lg:justify-end items-center lg:ml-6 xl:ml-12 order-1">
             <img
               src={"/W1.png"}
               alt={"Student Build Profile and Upload Resume"}
@@ -128,23 +128,23 @@ const WorkProcess = React.memo(() => {
               className="absolute w-full h-full rounded-xl object-fill object-center z-0 border"
             />
           </div>
-          <div className="col-span-1 w-[60%] flex flex-col justify-end items-start">
-            <div className="h-12 w-14 flex items-center justify-center py-2 border-2 border-border rounded-lg text-3xl mb-4">
+          <div className="w-full lg:w-[80%] xl:w-[60%] flex flex-col justify-center lg:justify-end items-start px-4 sm:px-0 order-2">
+            <div className="h-10 w-12 sm:h-12 sm:w-14 flex items-center justify-center py-2 border-2 border-border rounded-lg text-2xl sm:text-3xl mb-3 sm:mb-4">
               01
             </div>
 
-            <h3 className="text-3xl font-semibold text-foreground mb-2">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground mb-2">
               Student Build Profile and Upload Resume
             </h3>
-            <p className="text-md text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Resume PDF uploaded, parsed, and credentials submitted for verification
             </p>
           </div>
         </div>
 
         {/* Process Connectors */}
-        <div className="svgConnector1 w-full flex justify-center items-center -my-8">
-          <div className="w-[60%] max-w-[500px]">
+        <div className="svgConnector1 w-full justify-center items-center -my-4 sm:-my-6 md:-my-8 hidden lg:flex">
+          <div className="w-[70%] md:w-[60%] max-w-[500px]">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 356 126.116"
@@ -184,23 +184,23 @@ const WorkProcess = React.memo(() => {
         </div>
 
          {/* Process 2 */}
-        <div className="process2 h-[28rem] grid grid-cols-2 gap-6">
-          <div className="col-span-1 w-[60%] flex flex-col justify-end items-end text-right ml-48">
-            <div className="h-12 w-14 flex items-center justify-center py-2 border-2 border-border rounded-lg text-3xl mb-4">
+        <div className="process2 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:h-[28rem]">
+          <div className="w-full lg:w-[80%] xl:w-[60%] flex flex-col justify-center lg:justify-end items-start lg:items-end text-left lg:text-right px-4 sm:px-0 lg:ml-auto xl:ml-48 order-2 lg:order-1">
+            <div className="h-10 w-12 sm:h-12 sm:w-14 flex items-center justify-center py-2 border-2 border-border rounded-lg text-2xl sm:text-3xl mb-3 sm:mb-4">
               02
             </div>
 
-            <h3 className="text-3xl font-semibold text-foreground mb-2">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground mb-2">
               Verifier Approves and Verifies Credentials
             </h3>
-            <p className="text-md text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               College authority verifies authenticity of credentials
             </p>
           </div>
-          <div className="col-span-1 h-full w-[32rem] aspect-[4/5] relative overflow-hidden flex justify-end items-center border rounded-xl">
+          <div className="w-full max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-[32rem] aspect-[4/5] lg:aspect-auto lg:h-full relative overflow-hidden flex justify-center items-center border rounded-xl order-1 lg:order-2">
             <img
-              src={"/W2.png"}
-              alt={"Student Build Profile and Upload Resume"}
+              src="/W2.png"
+              alt="Verifier Approves and Verifies Credentials"
               loading="lazy"
               decoding="async"
               className="absolute w-full h-full rounded-lg object-fill object-center z-0"
@@ -209,8 +209,8 @@ const WorkProcess = React.memo(() => {
         </div>
 
         {/* Process Connectors */}
-        <div className="svgConnector2 w-full flex justify-center items-center -my-8">
-          <div className="w-[60%] max-w-[500px]">
+        <div className="svgConnector2 w-full justify-center items-center -my-4 sm:-my-6 md:-my-8 hidden lg:flex">
+          <div className="w-[70%] md:w-[60%] max-w-[500px]">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 356 126.116" overflow="visible">
               <g>
                 <defs>
@@ -236,25 +236,25 @@ const WorkProcess = React.memo(() => {
         </div>
 
          {/* Process 3 */}
-        <div className="process3 h-[28rem] grid grid-cols-2 gap-6">
-          <div className="col-span-1 h-full w-[32rem] aspect-[4/5] rounded-lg relative overflow-hidden flex justify-end items-center ml-12">
+        <div className="process3 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:h-[28rem]">
+          <div className="w-full max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-[32rem] aspect-[4/5] lg:aspect-auto lg:h-full rounded-lg relative overflow-hidden flex justify-center lg:justify-end items-center lg:ml-6 xl:ml-12 order-1">
             <img
               src="/W3.png"
-              alt={"Alumni Refers Based on Verified Credentials"}
+              alt="Alumni Refers Based on Verified Credentials"
               loading="lazy"
               decoding="async"
               className="border rounded-xl absolute w-full h-full object-fill object-center z-0"
             />
           </div>
-          <div className="col-span-1 w-[60%] flex flex-col justify-end items-start">
-            <div className="h-12 w-14 flex items-center justify-center py-2 border-2 border-border rounded-lg text-3xl mb-4">
+          <div className="w-full lg:w-[80%] xl:w-[60%] flex flex-col justify-center lg:justify-end items-start px-4 sm:px-0 order-2">
+            <div className="h-10 w-12 sm:h-12 sm:w-14 flex items-center justify-center py-2 border-2 border-border rounded-lg text-2xl sm:text-3xl mb-3 sm:mb-4">
               03
             </div>
 
-            <h3 className="text-3xl font-semibold text-foreground mb-2">
+            <h3 className="text-xl sm:text-2xl md:text-3xl font-semibold text-foreground mb-2">
               Alumni Refers Based on Verified Credentials
             </h3>
-            <p className="text-md text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Trusted referrals based on verified credentials
             </p>
           </div>
