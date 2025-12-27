@@ -29,7 +29,7 @@ interface Opportunity {
   };
   college: string;
   isActive: boolean;
-  status?: string;
+  status: 'Open' | 'Closed';
   createdAt: string;
   updatedAt: string;
 }
@@ -193,7 +193,7 @@ export function BackendOpportunitiesList({
               <div className="flex items-center gap-4 text-xs">
                 <span className="text-muted-foreground">
                   <Star className="w-3 h-3 inline mr-1" />
-                  {opportunity.referralsGiven}/{opportunity.numberOfReferrals} referrals given
+                  {opportunity.referralsGiven || 0}/{opportunity.numberOfReferrals} referrals given
                 </span>
               </div>
               <Button

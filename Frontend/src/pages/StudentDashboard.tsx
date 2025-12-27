@@ -18,10 +18,12 @@ import { QRCodeSection } from "@/components/Student/QRCodeSection";
 import { TabNavigation } from "@/components/Student/TabNavigation";
 import { ExternalJobsList } from "@/components/Student/ExternalJobsList";
 import { StudentProfilePage } from "@/pages/StudentProfilePage";
+import { ProfileCompletionModal } from "@/components/Student/ProfileCompletionModal";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { externalJobsApi, ExternalJob } from "@/services/externalJobs";
 import { opportunitiesApi, Opportunity } from "@/services/opportunities";
+import { studentProfileApi, ProfileStatusResponse } from "@/services/studentProfile";
 
 export function StudentDashboard() {
   const location = useLocation();
@@ -34,6 +36,12 @@ export function StudentDashboard() {
   const [loadingExternalJobs, setLoadingExternalJobs] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [isApplying, setIsApplying] = useState<string | null>(null);
+  
+  // Profile completion modal state
+  const [showProfileModal, setShowProfileModal] = useState(false);
+  const [profileStatus, setProfileStatus] = useState<ProfileStatusResponse['data'] | null>(null);
+  const [pendingOpportunityId, setPendingOpportunityId] = useState<string | null>(null);
+  const [appliedOpportunities, setAppliedOpportunities] = useState<string[]>([]);
 
   // Check if user is authenticated
   useEffect(() => {
@@ -70,6 +78,12 @@ export function StudentDashboard() {
       
       // Fetch opportunities from backend
       fetchOpportunities();
+      
+      // Fetch profile status
+      fetchProfileStatus();
+      
+      // Fetch applied opportunities
+      fetchAppliedOpportunities();
     }
   }, []);
 
@@ -79,6 +93,29 @@ export function StudentDashboard() {
       fetchExternalJobs();
     }
   }, [activeTab]);
+
+  const fetchProfileStatus = async () => {
+    try {
+      const response = await studentProfileApi.getProfileStatus();
+      if (response.success) {
+        setProfileStatus(response.data);
+      }
+    } catch (error) {
+      console.error('Error fetching profile status:', error);
+    }
+  };
+
+  const fetchAppliedOpportunities = async () => {
+    try {
+      const response = await opportunitiesApi.getMyApplications();
+      if (response.success) {
+        const appliedIds = response.data.map(app => app.opportunity._id);
+        setAppliedOpportunities(appliedIds);
+      }
+    } catch (error) {
+      console.error('Error fetching applied opportunities:', error);
+    }
+  };
 
   const fetchOpportunities = async () => {
     // Check if token exists
@@ -187,15 +224,31 @@ export function StudentDashboard() {
   };
 
   const handleApplyJob = async (jobId: string) => {
-    if (!student) return;
-    if (student.resumeStatus !== "verified") {
+    // First, check profile completion
+    try {
+      const statusResponse = await studentProfileApi.getProfileStatus();
+      setProfileStatus(statusResponse.data);
+      
+      if (statusResponse.data.completeness < 100) {
+        // Profile is not complete, show completion modal
+        setPendingOpportunityId(jobId);
+        setShowProfileModal(true);
+        return;
+      }
+    } catch (error) {
+      console.error('Error checking profile status:', error);
       showToast({
         type: "error",
-        message: "Your resume must be verified before applying",
+        message: "Failed to check profile status. Please try again.",
       });
       return;
     }
 
+    // Profile is complete, proceed with application
+    await submitApplication(jobId);
+  };
+
+  const submitApplication = async (jobId: string) => {
     setIsApplying(jobId);
     const toastId = showToast({
       type: "pending",
@@ -212,6 +265,9 @@ export function StudentDashboard() {
         message: response.message || "Application submitted successfully!",
       });
 
+      // Update applied opportunities list
+      setAppliedOpportunities(prev => [...prev, jobId]);
+
       // Refresh opportunities to update UI
       await fetchOpportunities();
 
@@ -223,6 +279,19 @@ export function StudentDashboard() {
       });
     } finally {
       setIsApplying(null);
+    }
+  };
+
+  const handleProfileComplete = async () => {
+    setShowProfileModal(false);
+    
+    // Refresh profile status
+    await fetchProfileStatus();
+    
+    // If there's a pending application, submit it now
+    if (pendingOpportunityId) {
+      await submitApplication(pendingOpportunityId);
+      setPendingOpportunityId(null);
     }
   };
 
@@ -274,10 +343,11 @@ export function StudentDashboard() {
           </div>
           <OpportunitiesList
             opportunities={opportunities}
+            appliedOpportunities={appliedOpportunities}
             loading={loadingOpportunities}
             isApplying={isApplying}
             onApply={handleApplyJob}
-            canApply={student?.resumeStatus === 'verified'}
+            canApply={true}
           />
         </motion.div>
       )}
@@ -327,6 +397,17 @@ export function StudentDashboard() {
           <QRCodeSection student={student} address={address} />
         </motion.div>
       )}
+
+      {/* Profile Completion Modal */}
+      <ProfileCompletionModal
+        isOpen={showProfileModal}
+        onClose={() => {
+          setShowProfileModal(false);
+          setPendingOpportunityId(null);
+        }}
+        onComplete={handleProfileComplete}
+        profileStatus={profileStatus}
+      />
     </div>
   );
 }

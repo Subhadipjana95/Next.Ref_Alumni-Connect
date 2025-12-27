@@ -4,7 +4,7 @@ interface BackendOpportunity {
   numberOfReferrals: number;
   referralsGiven: number;
   isActive?: boolean;
-  status?: string;
+  status?: 'Open' | 'Closed';
 }
 
 interface AlumniStatsProps {
@@ -15,7 +15,7 @@ export function AlumniStats({ backendOpportunities = [] }: AlumniStatsProps) {
   // Backend stats
   const opportunitiesCount = backendOpportunities.length;
   const totalReferralsGiven = backendOpportunities.reduce((acc, opp) => acc + (opp.referralsGiven || 0), 0);
-  const activeOpportunities = backendOpportunities.filter(opp => opp.isActive || opp.status === 'active').length;
+  const activeOpportunities = backendOpportunities.filter(opp => opp.isActive || opp.status === 'Open').length;
 
   return (
     <div className="mx-auto grid sm:grid-cols-4 gap-4">

@@ -25,6 +25,11 @@ const OpportunitySchema = new mongoose.Schema({
         min: 1,
         default: 1,
     },
+    referralsGiven: {
+        type: Number,
+        default: 0,
+        min: 0,
+    },
     postedBy: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Alumni",
@@ -41,5 +46,14 @@ const OpportunitySchema = new mongoose.Schema({
         default: "Open",
     },
 }, { timestamps: true });
+
+// Virtual field for isActive (computed from status)
+OpportunitySchema.virtual('isActive').get(function() {
+    return this.status === "Open";
+});
+
+// Ensure virtuals are included in JSON and Object outputs
+OpportunitySchema.set('toJSON', { virtuals: true });
+OpportunitySchema.set('toObject', { virtuals: true });
 
 module.exports = mongoose.model("Opportunity", OpportunitySchema);

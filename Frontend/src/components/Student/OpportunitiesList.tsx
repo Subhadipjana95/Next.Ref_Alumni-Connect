@@ -61,7 +61,9 @@ export function OpportunitiesList({
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-8xl mx-auto">
       {opportunities.map((opportunity) => {
         const hasApplied = appliedOpportunities.includes(opportunity._id);
-        const referralsLeft = opportunity.numberOfReferrals - opportunity.referralsGiven;
+        const referralsGiven = opportunity.referralsGiven || 0;
+        const referralsLeft = opportunity.numberOfReferrals - referralsGiven;
+        const isOpen = opportunity.status === 'Open' || opportunity.isActive;
 
         return (
           <div
@@ -133,7 +135,7 @@ export function OpportunitiesList({
 
               {/* Status Badge */}
               <div className="flex items-center gap-2">
-                {opportunity.isActive ? (
+                {isOpen ? (
                   <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-success/10 text-success border border-success/20">
                     <Briefcase className="w-3 h-3" />
                     Active
@@ -158,7 +160,7 @@ export function OpportunitiesList({
                   <CheckCircle className="w-4 h-4 mr-2" />
                   Applied
                 </Button>
-              ) : referralsLeft === 0 || !opportunity.isActive ? (
+              ) : referralsLeft === 0 || !isOpen ? (
                 <Button variant="secondary" disabled className="w-full">
                   <Users className="w-4 h-4 mr-2" />
                   Not Available
