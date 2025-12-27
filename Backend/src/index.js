@@ -88,15 +88,17 @@ const InitlizeConnection = async()=>{
 
     try{
         await dbconnect();
-        console.log("connected to MongoDB");
+        console.log("✅ Connected to MongoDB");
         cloudinary.cloudinaryConnect();
-         console.log("connected to Cloudinary");
+        console.log("✅ Connected to Cloudinary");
         app.listen(PORT, ()=>{
-            console.log(`https://localhost:${PORT}`);
+            console.log(`🚀 Server running at http://localhost:${PORT}`);
         })
     }
     catch(err){
-        console.log("Error "+err);
+        console.error("❌ Failed to initialize application");
+        console.error("Error:", err.message);
+        process.exit(1); // Exit if database connection fails
     }
 }
 

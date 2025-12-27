@@ -99,24 +99,6 @@ const studentSchema = new mongoose.Schema({
         type: Date,
       },
     },
-    resume: {
-      data: {
-        type: Buffer,
-      },
-      contentType: {
-        type: String,
-      },
-      fileName: {
-        type: String,
-      },
-      fileSize: {
-        type: Number,
-      },
-      uploadedAt: {
-        type: Date,
-      },
-    },
-
     linkedIn: {
       data: {
         type: Buffer,
