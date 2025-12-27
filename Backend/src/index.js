@@ -56,6 +56,7 @@ const studentAuthRoutes = require("./routes/StudentAuthRoutes");
 const profileRoutes = require("./routes/StudentProfileRoutes");
 const resumeRoutes = require("./routes/StudentResumeRoutes");
 const linkedInRoutes = require("./routes/StudentLinkedInRoutes");
+const githubRoutes = require("./routes/StudentGithubRoutes");
 const alumniAuthRoutes = require("./routes/AlumniAuthRoutes");
 const alumniProfileRoutes = require("./routes/AlumniProfileRoutes");
 const opportunityRoutes = require("./routes/OpportunityRoutes");
@@ -76,6 +77,7 @@ app.use("/api/v1/student", studentAuthRoutes);
 app.use("/api/v1/student", profileRoutes);
 app.use("/api/v1/student", resumeRoutes);
 app.use("/api/v1/student", linkedInRoutes);
+app.use("/api/v1/student", githubRoutes);
 app.use("/api/v1/alumni", alumniAuthRoutes);
 app.use("/api/v1/alumni", alumniProfileRoutes);
 app.use("/api/v1", opportunityRoutes);
@@ -88,15 +90,17 @@ const InitlizeConnection = async()=>{
 
     try{
         await dbconnect();
-        console.log("connected to MongoDB");
+        console.log("✅ Connected to MongoDB");
         cloudinary.cloudinaryConnect();
-         console.log("connected to Cloudinary");
+        console.log("✅ Connected to Cloudinary");
         app.listen(PORT, ()=>{
-            console.log(`https://localhost:${PORT}`);
+            console.log(`🚀 Server running at http://localhost:${PORT}`);
         })
     }
     catch(err){
-        console.log("Error "+err);
+        console.error("❌ Failed to initialize application");
+        console.error("Error:", err.message);
+        process.exit(1); // Exit if database connection fails
     }
 }
 
