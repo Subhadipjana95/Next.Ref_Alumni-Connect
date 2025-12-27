@@ -9,6 +9,7 @@ import {
   TrendingUp,
   Briefcase,
   Target,
+  Eye,
 } from 'lucide-react';
 
 interface OpportunitiesListProps {
@@ -17,6 +18,7 @@ interface OpportunitiesListProps {
   loading?: boolean;
   isApplying: string | null;
   onApply: (opportunityId: string) => Promise<void>;
+  onViewDetails: (opportunity: Opportunity) => void;
   canApply?: boolean;
 }
 
@@ -26,6 +28,7 @@ export function OpportunitiesList({
   loading,
   isApplying, 
   onApply,
+  onViewDetails,
   canApply = true 
 }: OpportunitiesListProps) {
   
@@ -153,8 +156,19 @@ export function OpportunitiesList({
               </div>
             </div>
 
-            {/* Apply Button */}
-            <div className="mt-4 pt-4 border-t border-border/50">
+            {/* Action Buttons */}
+            <div className="mt-4 pt-4 border-t border-border/50 space-y-2">
+              {/* View Details Button */}
+              <Button
+                variant="outline"
+                onClick={() => onViewDetails(opportunity)}
+                className="w-full"
+              >
+                <Eye className="w-4 h-4 mr-2" />
+                View Details
+              </Button>
+              
+              {/* Apply Button */}
               {hasApplied ? (
                 <Button variant="default" disabled className="w-full bg-success/20 text-success hover:bg-success/20">
                   <CheckCircle className="w-4 h-4 mr-2" />
@@ -166,31 +180,24 @@ export function OpportunitiesList({
                   Not Available
                 </Button>
               ) : (
-                <div className="w-full">
-                  <Button
-                    variant="default"
-                    onClick={() => onApply(opportunity._id)}
-                    disabled={!canApply || isApplying === opportunity._id}
-                    className='w-full bg-primary text-background hover:bg-primary/90'
-                  >
-                    {isApplying === opportunity._id ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Applying...
-                      </>
-                    ) : (
-                      <>
-                        <Users className="w-4 h-4 mr-2" />
-                        Apply for Referral
-                      </>
-                    )}
-                  </Button>
-                  {!canApply && (
-                    <p className="text-xs text-warning mt-2 text-center">
-                      Resume must be verified to apply
-                    </p>
+                <Button
+                  variant="default"
+                  onClick={() => onApply(opportunity._id)}
+                  disabled={!canApply || isApplying === opportunity._id}
+                  className='w-full bg-primary text-background hover:bg-primary/90'
+                >
+                  {isApplying === opportunity._id ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Applying...
+                    </>
+                  ) : (
+                    <>
+                      <Users className="w-4 h-4 mr-2" />
+                      Apply for Referral
+                    </>
                   )}
-                </div>
+                </Button>
               )}
             </div>
           </div>

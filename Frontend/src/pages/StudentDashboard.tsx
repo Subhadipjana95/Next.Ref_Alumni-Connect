@@ -19,10 +19,12 @@ import { TabNavigation } from "@/components/Student/TabNavigation";
 import { ExternalJobsList } from "@/components/Student/ExternalJobsList";
 import { StudentProfilePage } from "@/pages/StudentProfilePage";
 import { ProfileCompletionModal } from "@/components/Student/ProfileCompletionModal";
+import { OpportunityDetailModal } from "@/components/Student/OpportunityDetailModal";
+import { AppliedJobsList } from "@/components/Student/AppliedJobsList";
 import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { externalJobsApi, ExternalJob } from "@/services/externalJobs";
-import { opportunitiesApi, Opportunity } from "@/services/opportunities";
+import { opportunitiesApi, Opportunity, MyApplication } from "@/services/opportunities";
 import { studentProfileApi, ProfileStatusResponse } from "@/services/studentProfile";
 
 export function StudentDashboard() {
@@ -42,6 +44,14 @@ export function StudentDashboard() {
   const [profileStatus, setProfileStatus] = useState<ProfileStatusResponse['data'] | null>(null);
   const [pendingOpportunityId, setPendingOpportunityId] = useState<string | null>(null);
   const [appliedOpportunities, setAppliedOpportunities] = useState<string[]>([]);
+  
+  // Opportunity detail modal state
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
+  const [showDetailModal, setShowDetailModal] = useState(false);
+  
+  // Applied jobs state
+  const [myApplications, setMyApplications] = useState<MyApplication[]>([]);
+  const [loadingApplications, setLoadingApplications] = useState(false);
 
   // Check if user is authenticated
   useEffect(() => {
@@ -62,10 +72,11 @@ export function StudentDashboard() {
   });
 
   // Determine active tab from URL
-  const getActiveTab = (): "profile" | "jobs" | "referrals" | "qrcode" => {
+  const getActiveTab = (): "profile" | "jobs" | "referrals" | "qrcode" | "applied" => {
     if (location.pathname.includes('/profile')) return 'profile';
     if (location.pathname.includes('/jobs')) return 'jobs';
     if (location.pathname.includes('/qrcode')) return 'qrcode';
+    if (location.pathname.includes('/applied')) return 'applied';
     return 'referrals';
   };
 
@@ -106,15 +117,25 @@ export function StudentDashboard() {
   };
 
   const fetchAppliedOpportunities = async () => {
+    setLoadingApplications(true);
     try {
       const response = await opportunitiesApi.getMyApplications();
-      if (response.success) {
-        const appliedIds = response.data.map(app => app.opportunity._id);
+      if (response.success && response.data) {
+        const applications = response.data.applications || [];
+        setMyApplications(applications);
+        const appliedIds = applications.map(app => app.opportunity._id);
         setAppliedOpportunities(appliedIds);
       }
     } catch (error) {
       console.error('Error fetching applied opportunities:', error);
+    } finally {
+      setLoadingApplications(false);
     }
+  };
+
+  const handleViewDetails = (opportunity: Opportunity) => {
+    setSelectedOpportunity(opportunity);
+    setShowDetailModal(true);
   };
 
   const fetchOpportunities = async () => {
@@ -270,6 +291,9 @@ export function StudentDashboard() {
 
       // Refresh opportunities to update UI
       await fetchOpportunities();
+      
+      // Refresh applications list to update the Applied Jobs tab
+      await fetchAppliedOpportunities();
 
     } catch (error: any) {
       dismissToast(toastId);
@@ -315,6 +339,7 @@ export function StudentDashboard() {
       <TabNavigation
         activeTab={activeTab}
         student={student}
+        appliedCount={myApplications.length}
       />
 
       {/* Profile Tab */}
@@ -342,12 +367,34 @@ export function StudentDashboard() {
             </p>
           </div>
           <OpportunitiesList
-            opportunities={opportunities}
+            opportunities={opportunities.filter(opp => !appliedOpportunities.includes(opp._id))}
             appliedOpportunities={appliedOpportunities}
             loading={loadingOpportunities}
             isApplying={isApplying}
             onApply={handleApplyJob}
+            onViewDetails={handleViewDetails}
             canApply={true}
+          />
+        </motion.div>
+      )}
+
+      {/* Applied Jobs Tab */}
+      {activeTab === "applied" && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="mb-6">
+            <h2 className="text-2xl font-bold text-foreground mb-2">
+              My Applications
+            </h2>
+            <p className="text-muted-foreground">
+              Track the status of your referral applications
+            </p>
+          </div>
+          <AppliedJobsList
+            applications={myApplications}
+            loading={loadingApplications}
           />
         </motion.div>
       )}
@@ -389,12 +436,12 @@ export function StudentDashboard() {
       )}
 
       {/* QR Code Tab */}
-      {activeTab === "qrcode" && student && address && (
+      {activeTab === "qrcode" && student && (
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <QRCodeSection student={student} address={address} />
+          <QRCodeSection student={student} address={student.walletAddress || ''} />
         </motion.div>
       )}
 
@@ -407,6 +454,22 @@ export function StudentDashboard() {
         }}
         onComplete={handleProfileComplete}
         profileStatus={profileStatus}
+      />
+
+      {/* Opportunity Detail Modal */}
+      <OpportunityDetailModal
+        opportunity={selectedOpportunity}
+        isOpen={showDetailModal}
+        onClose={() => {
+          setShowDetailModal(false);
+          setSelectedOpportunity(null);
+        }}
+        onApply={async (opportunityId) => {
+          setShowDetailModal(false);
+          await handleApplyJob(opportunityId);
+        }}
+        isApplying={isApplying === selectedOpportunity?._id}
+        hasApplied={selectedOpportunity ? appliedOpportunities.includes(selectedOpportunity._id) : false}
       />
     </div>
   );

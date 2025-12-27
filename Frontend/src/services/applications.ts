@@ -43,9 +43,12 @@ export interface ApplicationStudent {
   lastName: string;
   email: string;
   college: string;
-  department: string;
+  branch?: string;
+  department?: string;
   graduationYear: number;
   skills?: string[];
+  profileCompleteness?: number;
+  image?: string;
   resume?: string;
 }
 
@@ -55,10 +58,10 @@ export interface ApplicationDetail {
   opportunity: {
     _id: string;
     jobTitle: string;
-    roleDescription: string;
+    roleDescription?: string;
     experienceLevel: string;
   };
-  status: 'pending' | 'shortlisted' | 'referred' | 'rejected';
+  status: 'Applied' | 'Shortlisted' | 'Referred' | 'Rejected';
   appliedAt: string;
   updatedAt: string;
   statusHistory?: Array<{
@@ -70,8 +73,23 @@ export interface ApplicationDetail {
 
 export interface ApplicationsResponse {
   success: boolean;
-  count: number;
-  data: ApplicationDetail[];
+  total: number;
+  data: {
+    all: ApplicationDetail[];
+    grouped: {
+      applied: ApplicationDetail[];
+      shortlisted: ApplicationDetail[];
+      referred: ApplicationDetail[];
+      rejected: ApplicationDetail[];
+    };
+    counts: {
+      applied: number;
+      shortlisted: number;
+      referred: number;
+      rejected: number;
+    };
+  };
+  message: string;
 }
 
 export interface SingleApplicationResponse {
@@ -105,6 +123,37 @@ export const applicationsApi = {
   },
 
   /**
+   * Download a student's resume (Alumni - same college)
+   * @param studentId - ID of the student
+   */
+  downloadStudentResume: async (studentId: string): Promise<void> => {
+    const response = await api.get(`/applications/student/${studentId}/resume`, {
+      responseType: 'blob',
+    });
+    
+    // Get filename from Content-Disposition header or use default
+    const contentDisposition = response.headers['content-disposition'];
+    let filename = 'resume.pdf';
+    if (contentDisposition) {
+      const filenameMatch = contentDisposition.match(/filename="(.+)"/);
+      if (filenameMatch) {
+        filename = filenameMatch[1];
+      }
+    }
+    
+    // Create blob URL and trigger download
+    const blob = new Blob([response.data], { type: response.headers['content-type'] });
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  },
+
+  /**
    * Shortlist a student application (Alumni only - owner)
    * @param applicationId - ID of the application
    */
@@ -128,6 +177,63 @@ export const applicationsApi = {
    */
   rejectApplication: async (applicationId: string): Promise<ActionResponse> => {
     const response = await api.post(`/applications/${applicationId}/reject`);
+    return response.data;
+  },
+
+  /**
+   * Get all applications for the logged-in student
+   * @param status - Optional filter by status (Applied, Shortlisted, Referred, Rejected)
+   * @param page - Page number for pagination
+   * @param limit - Number of items per page
+   */
+  getMyApplications: async (status?: string, page: number = 1, limit: number = 20): Promise<{
+    success: boolean;
+    data: {
+      applications: Array<{
+        _id: string;
+        opportunity: {
+          _id: string;
+          jobTitle: string;
+          roleDescription: string;
+          experienceLevel: string;
+          requiredSkills: string[];
+          status: string;
+        };
+        alumni: {
+          _id: string;
+          firstName: string;
+          lastName: string;
+          email: string;
+          company: string;
+          currentRole: string;
+          image?: string;
+        };
+        status: string;
+        appliedAt: string;
+        updatedAt: string;
+      }>;
+      statusSummary: {
+        applied: number;
+        shortlisted: number;
+        referred: number;
+        rejected: number;
+      };
+      pagination: {
+        currentPage: number;
+        totalPages: number;
+        totalApplications: number;
+        hasNextPage: boolean;
+        hasPrevPage: boolean;
+      };
+    };
+    message: string;
+  }> => {
+    const params = new URLSearchParams();
+    if (status) params.append('status', status);
+    params.append('page', page.toString());
+    params.append('limit', limit.toString());
+    
+    const response = await api.get(`/my-applications?${params.toString()}`);
     return response.data;
   },
 };

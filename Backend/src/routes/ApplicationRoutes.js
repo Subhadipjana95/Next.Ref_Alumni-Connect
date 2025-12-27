@@ -11,6 +11,7 @@ const {
     applyForReferral,
     getMyApplications,
     getApplicationDetails,
+    downloadStudentResume,
 } = require("../controllers/ApplicationController");
 
 // Import middleware
@@ -28,6 +29,9 @@ router.get("/applications/:opportunityId", viewApplications);
 
 // View Student Profile (Alumni - same college)
 router.get("/applications/student/:studentId", viewStudentProfile);
+
+// Download Student Resume (Alumni - same college)
+router.get("/applications/student/:studentId/resume", downloadStudentResume);
 
 // Shortlist Student (Alumni only - owner)
 router.post("/applications/:applicationId/shortlist", shortlistStudent);
