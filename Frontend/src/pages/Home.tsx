@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LandingHero from '@/components/Home/LandingHero';
-import { useAuth } from '@/Auth/AuthContext';
+import { useAuth } from '@/services/Auth/AuthContext';
 import Navbar from '@/components/Navbar';
 import Features from '@/components/Home/Features';
 import WorkProcess from '@/components/Home/WorkProcess';

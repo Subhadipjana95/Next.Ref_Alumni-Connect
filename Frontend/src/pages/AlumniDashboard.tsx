@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '@/Auth/AuthContext';
+import { useAuth } from '@/services/Auth/AuthContext';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { showToast, dismissToast } from '@/components/TransactionToast';

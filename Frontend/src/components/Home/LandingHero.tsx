@@ -113,46 +113,19 @@ const LandingHero = React.memo(() => {
         }
       );
 
-      // Progressive scale up based on scroll - optimized
+      // Simplified single parallax effect for better performance
       gsap.to(imageContainerRef.current, {
-        scale: 1.1,
-        ease: "none",
-        force3D: true,
-        scrollTrigger: {
-          trigger: lowerHeroRef.current,
-          start: "top center",
-          end: "bottom top",
-          scrub: 0.5,
-          fastScrollEnd: true,
-        },
-      });
-
-      // Parallax effect on scroll - optimized
-      gsap.to(imageContainerRef.current, {
-        y: -50,
+        y: -30,
+        scale: 1.05,
         ease: "none",
         force3D: true,
         scrollTrigger: {
           trigger: lowerHeroRef.current,
           start: "top bottom",
           end: "bottom top",
-          scrub: 0.5,
+          scrub: 2,
           fastScrollEnd: true,
-        },
-      });
-
-      // Subtle scale effect on upper hero while scrolling - optimized
-      gsap.to(heroRef.current, {
-        scale: 0.95,
-        opacity: 0.8,
-        ease: "none",
-        force3D: true,
-        scrollTrigger: {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.5,
-          fastScrollEnd: true,
+          invalidateOnRefresh: false,
         },
       });
     });
