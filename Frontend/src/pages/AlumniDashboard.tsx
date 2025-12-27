@@ -12,6 +12,7 @@ import { EditOpportunityModal } from '@/components/Alumni/EditOpportunityModal';
 import { Briefcase, Plus, ArrowLeft, Star } from 'lucide-react';
 import { opportunitiesApi } from '@/services/opportunities';
 import { applicationsApi } from '@/services/applications';
+import { Job } from '@/lib/types';
 
 export function AlumniDashboard() {
   const { user, isAuthenticated } = useAuth();
