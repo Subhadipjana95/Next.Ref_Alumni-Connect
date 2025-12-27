@@ -1,0 +1,1073 @@
+{
+	"info": {
+		"_postman_id": "complete-alumni-connect-api",
+		"name": "Alumni Connect - Complete API Collection",
+		"description": "Complete API collection for Alumni Connect platform - Student, Alumni, Opportunities, Applications, and Jobs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/api/v1",
+			"type": "string"
+		},
+		{
+			"key": "student_token",
+			"value": "STUDENT_JWT_TOKEN_HERE",
+			"type": "string"
+		},
+		{
+			"key": "alumni_token",
+			"value": "ALUMNI_JWT_TOKEN_HERE",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Student APIs",
+			"item": [
+				{
+					"name": "Authentication",
+					"item": [
+						{
+							"name": "Student Signup",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"john.student@example.com\",\n  \"password\": \"SecurePass123\",\n  \"college\": \"60d5ec49f1b2c8b1f8c8e8a1\",\n  \"branch\": \"Computer Science\",\n  \"graduationYear\": 2025\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/student/signup",
+									"host": ["{{base_url}}"],
+									"path": ["student", "signup"]
+								}
+							}
+						},
+						{
+							"name": "Student Login",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"john.student@example.com\",\n  \"password\": \"SecurePass123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/student/login",
+									"host": ["{{base_url}}"],
+									"path": ["student", "login"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Profile Management",
+					"item": [
+						{
+							"name": "Update Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"image\": \"https://example.com/profile.jpg\",\n  \"branch\": \"Computer Science\",\n  \"graduationYear\": 2025,\n  \"skills\": [\"JavaScript\", \"React\", \"Node.js\", \"MongoDB\"],\n  \"projects\": [\n    {\n      \"title\": \"E-commerce Platform\",\n      \"description\": \"Full-stack e-commerce application\",\n      \"link\": \"https://github.com/johndoe/ecommerce\"\n    }\n  ],\n  \"certifications\": [\n    {\n      \"name\": \"AWS Certified Developer\",\n      \"issuer\": \"Amazon Web Services\",\n      \"date\": \"2024-12-15\"\n    }\n  ],\n  \"preferredRoles\": [\"Full Stack Developer\", \"Backend Developer\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/student/profile",
+									"host": ["{{base_url}}"],
+									"path": ["student", "profile"]
+								}
+							}
+						},
+						{
+							"name": "Get Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/profile",
+									"host": ["{{base_url}}"],
+									"path": ["student", "profile"]
+								}
+							}
+						},
+						{
+							"name": "Get Profile Status",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/profile/status",
+									"host": ["{{base_url}}"],
+									"path": ["student", "profile", "status"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Resume Management",
+					"item": [
+						{
+							"name": "Upload Resume",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "resume",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/student/resume/upload",
+									"host": ["{{base_url}}"],
+									"path": ["student", "resume", "upload"]
+								}
+							}
+						},
+						{
+							"name": "Update Resume",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "resume",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/student/resume/update",
+									"host": ["{{base_url}}"],
+									"path": ["student", "resume", "update"]
+								}
+							}
+						},
+						{
+							"name": "Get Resume",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/resume",
+									"host": ["{{base_url}}"],
+									"path": ["student", "resume"]
+								}
+							}
+						},
+						{
+							"name": "Delete Resume",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/resume",
+									"host": ["{{base_url}}"],
+									"path": ["student", "resume"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "LinkedIn Management",
+					"item": [
+						{
+							"name": "Upload LinkedIn",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "linkedIn",
+											"type": "file",
+											"src": []
+										},
+										{
+											"key": "linkedInUrl",
+											"value": "https://www.linkedin.com/in/john-doe-123456",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/student/linkedin/upload",
+									"host": ["{{base_url}}"],
+									"path": ["student", "linkedin", "upload"]
+								}
+							}
+						},
+						{
+							"name": "Update LinkedIn URL",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"linkedInUrl\": \"https://www.linkedin.com/in/jane-smith-789012\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/student/linkedin/url",
+									"host": ["{{base_url}}"],
+									"path": ["student", "linkedin", "url"]
+								}
+							}
+						},
+						{
+							"name": "Update LinkedIn PDF",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "linkedIn",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}/student/linkedin/pdf",
+									"host": ["{{base_url}}"],
+									"path": ["student", "linkedin", "pdf"]
+								}
+							}
+						},
+						{
+							"name": "Get LinkedIn",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/linkedin",
+									"host": ["{{base_url}}"],
+									"path": ["student", "linkedin"]
+								}
+							}
+						},
+						{
+							"name": "Delete LinkedIn",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/linkedin",
+									"host": ["{{base_url}}"],
+									"path": ["student", "linkedin"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "GitHub Management",
+					"item": [
+						{
+							"name": "Add GitHub URL",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"githubUrl\": \"https://github.com/johndoe\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/student/github",
+									"host": ["{{base_url}}"],
+									"path": ["student", "github"]
+								}
+							}
+						},
+						{
+							"name": "Update GitHub URL",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"githubUrl\": \"https://github.com/janedoe\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/student/github",
+									"host": ["{{base_url}}"],
+									"path": ["student", "github"]
+								}
+							}
+						},
+						{
+							"name": "Get GitHub URL",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/github",
+									"host": ["{{base_url}}"],
+									"path": ["student", "github"]
+								}
+							}
+						},
+						{
+							"name": "Delete GitHub URL",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/github",
+									"host": ["{{base_url}}"],
+									"path": ["student", "github"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "External Jobs",
+					"item": [
+						{
+							"name": "Get External Jobs",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/jobs/external",
+									"host": ["{{base_url}}"],
+									"path": ["student", "jobs", "external"]
+								}
+							}
+						},
+						{
+							"name": "Search External Jobs",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/student/jobs/external/search?query=developer&location=remote",
+									"host": ["{{base_url}}"],
+									"path": ["student", "jobs", "external", "search"],
+									"query": [
+										{
+											"key": "query",
+											"value": "developer"
+										},
+										{
+											"key": "location",
+											"value": "remote"
+										}
+									]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Applications",
+					"item": [
+						{
+							"name": "Apply for Referral",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"opportunityId\": \"60d5ec49f1b2c8b1f8c8e8a1\",\n  \"coverLetter\": \"I am very interested in this opportunity...\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/apply",
+									"host": ["{{base_url}}"],
+									"path": ["apply"]
+								}
+							}
+						},
+						{
+							"name": "Get My Applications",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/my-applications",
+									"host": ["{{base_url}}"],
+									"path": ["my-applications"]
+								}
+							}
+						},
+						{
+							"name": "Get Application Details",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{student_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/my-applications/:applicationId",
+									"host": ["{{base_url}}"],
+									"path": ["my-applications", ":applicationId"],
+									"variable": [
+										{
+											"key": "applicationId",
+											"value": "60d5ec49f1b2c8b1f8c8e8a1"
+										}
+									]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Alumni APIs",
+			"item": [
+				{
+					"name": "Authentication",
+					"item": [
+						{
+							"name": "Alumni Signup",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"email\": \"jane.alumni@example.com\",\n  \"password\": \"SecurePass456\",\n  \"college\": \"60d5ec49f1b2c8b1f8c8e8a1\",\n  \"graduationYear\": 2020,\n  \"currentCompany\": \"Tech Corp\",\n  \"currentPosition\": \"Senior Developer\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/alumni/signup",
+									"host": ["{{base_url}}"],
+									"path": ["alumni", "signup"]
+								}
+							}
+						},
+						{
+							"name": "Alumni Login",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"email\": \"jane.alumni@example.com\",\n  \"password\": \"SecurePass456\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/alumni/login",
+									"host": ["{{base_url}}"],
+									"path": ["alumni", "login"]
+								}
+							}
+						}
+					]
+				},
+				{
+					"name": "Profile Management",
+					"item": [
+						{
+							"name": "Update Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{alumni_token}}"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Smith\",\n  \"image\": \"https://example.com/alumni-profile.jpg\",\n  \"currentCompany\": \"Tech Corp\",\n  \"currentPosition\": \"Senior Developer\",\n  \"graduationYear\": 2020,\n  \"linkedInUrl\": \"https://www.linkedin.com/in/jane-smith\",\n  \"expertise\": [\"JavaScript\", \"React\", \"System Design\"]\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/alumni/profile",
+									"host": ["{{base_url}}"],
+									"path": ["alumni", "profile"]
+								}
+							}
+						},
+						{
+							"name": "Get Profile",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{alumni_token}}"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/alumni/profile",
+									"host": ["{{base_url}}"],
+									"path": ["alumni", "profile"]
+								}
+							}
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Opportunities APIs",
+			"item": [
+				{
+					"name": "Create Opportunity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"company\": \"Tech Corp\",\n  \"position\": \"Full Stack Developer\",\n  \"description\": \"We are looking for talented developers...\",\n  \"requirements\": [\"React\", \"Node.js\", \"MongoDB\"],\n  \"location\": \"Remote\",\n  \"jobType\": \"Full-time\",\n  \"experience\": \"0-2 years\",\n  \"deadline\": \"2025-02-28\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/opportunities/create",
+							"host": ["{{base_url}}"],
+							"path": ["opportunities", "create"]
+						}
+					}
+				},
+				{
+					"name": "Update Opportunity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"position\": \"Senior Full Stack Developer\",\n  \"description\": \"Updated description...\",\n  \"deadline\": \"2025-03-15\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/opportunities/:opportunityId",
+							"host": ["{{base_url}}"],
+							"path": ["opportunities", ":opportunityId"],
+							"variable": [
+								{
+									"key": "opportunityId",
+									"value": "60d5ec49f1b2c8b1f8c8e8a1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Opportunity",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/opportunities/:opportunityId",
+							"host": ["{{base_url}}"],
+							"path": ["opportunities", ":opportunityId"],
+							"variable": [
+								{
+									"key": "opportunityId",
+									"value": "60d5ec49f1b2c8b1f8c8e8a1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get All Opportunities",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{student_token}}"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/opportunities",
+							"host": ["{{base_url}}"],
+							"path": ["opportunities"]
+						}
+					}
+				},
+				{
+					"name": "Get My Opportunities",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/my-opportunities",
+							"host": ["{{base_url}}"],
+							"path": ["my-opportunities"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Application Management (Alumni)",
+			"item": [
+				{
+					"name": "View Applications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/applications/:opportunityId",
+							"host": ["{{base_url}}"],
+							"path": ["applications", ":opportunityId"],
+							"variable": [
+								{
+									"key": "opportunityId",
+									"value": "60d5ec49f1b2c8b1f8c8e8a1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "View Student Profile",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/applications/student/:studentId",
+							"host": ["{{base_url}}"],
+							"path": ["applications", "student", ":studentId"],
+							"variable": [
+								{
+									"key": "studentId",
+									"value": "60d5ec49f1b2c8b1f8c8e8a1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Shortlist Student",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/applications/:applicationId/shortlist",
+							"host": ["{{base_url}}"],
+							"path": ["applications", ":applicationId", "shortlist"],
+							"variable": [
+								{
+									"key": "applicationId",
+									"value": "60d5ec49f1b2c8b1f8c8e8a1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Mark as Referred",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/applications/:applicationId/refer",
+							"host": ["{{base_url}}"],
+							"path": ["applications", ":applicationId", "refer"],
+							"variable": [
+								{
+									"key": "applicationId",
+									"value": "60d5ec49f1b2c8b1f8c8e8a1"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Reject Application",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{alumni_token}}"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/applications/:applicationId/reject",
+							"host": ["{{base_url}}"],
+							"path": ["applications", ":applicationId", "reject"],
+							"variable": [
+								{
+									"key": "applicationId",
+									"value": "60d5ec49f1b2c8b1f8c8e8a1"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Health Check",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/",
+					"protocol": "http",
+					"host": ["localhost"],
+					"port": "3000",
+					"path": [""]
+				}
+			}
+		}
+	]
+}

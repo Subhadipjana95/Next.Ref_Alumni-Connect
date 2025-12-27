@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken")
 const {handleAuthSuccess} = require('../utils/tokenGenerator');
 require("dotenv").config()
 const validator = require("validator")
+const { calculateProfileCompleteness } = require("../utils/calculateProfileScore");
 
 // Signup Controller for Registering USers
 
@@ -20,30 +21,6 @@ function validateEmail(email, res) {
     return true;
 }
 
-// Helper function to calculate profile completeness
-function calculateProfileCompleteness(student) {
-    let score = 0;
-    const fields = [
-        { field: student.firstName, weight: 8 },
-        { field: student.lastName, weight: 8 },
-        { field: student.email, weight: 8 },
-        { field: student.image, weight: 4 },
-        { field: student.college, weight: 12 },
-        { field: student.branch, weight: 10 },
-        { field: student.graduationYear, weight: 10 },
-        { field: student.skills && student.skills.length > 0, weight: 10 },
-        { field: student.projects && student.projects.length > 0, weight: 10 },
-        { field: student.certifications && student.certifications.length > 0, weight: 5 },
-        { field: student.preferredRoles && student.preferredRoles.length > 0, weight: 5 },
-        { field: student.resume && student.resume.url, weight: 10 },
-    ];
-
-    fields.forEach(({ field, weight }) => {
-        if (field) score += weight;
-    });
-
-    return score;
-}
 
 
 exports.signup = async (req, res) => {
