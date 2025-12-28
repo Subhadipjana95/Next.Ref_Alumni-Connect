@@ -440,6 +440,10 @@ exports.applyForReferral = async (req, res) => {
             student: studentId,
             alumni: opportunity.postedBy._id,
             status: "Applied",
+            studentDetails: {
+                profileScore: req.body.profileScore || null,
+                interviewScore: req.body.interviewScore || null,
+            },
             profileSnapshot,
             resumeSnapshot,
             appliedAt: new Date(),

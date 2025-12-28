@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Save, TrendingUp, CheckCircle2, AlertCircle, Plus, X } from 'lucide-react';
+import { Loader2, Save, TrendingUp, CheckCircle2, AlertCircle, Plus, X, Award } from 'lucide-react';
 import { studentProfileApi, StudentProfile, ProfileStatusResponse, Project, Certification } from '@/services/studentProfile';
 import { showTransactionToast, dismissToast } from '@/components/TransactionToast';
 // Import new profile section components
@@ -21,6 +21,7 @@ export function StudentProfilePage() {
   const [profileStatus, setProfileStatus] = useState<ProfileStatusResponse['data'] | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [scores, setScores] = useState<{ profileScore?: number; interviewScore?: number; combinedScore?: number } | null>(null);
 
   // Form data
   const [branch, setBranch] = useState('');
@@ -41,7 +42,55 @@ export function StudentProfilePage() {
   useEffect(() => {
     fetchProfile();
     fetchProfileStatus();
+    fetchScores();
   }, []);
+
+  const fetchScores = async () => {
+    try {
+      // Fetch applications to get interview and profile scores
+      const response = await fetch(`${import.meta.env.VITE_API_BASE_URL || 'http://localhost:4000/api/v1'}/applications`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+        }
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const applications = data.data || data;
+        
+        // Calculate average scores from all applications
+        let totalProfileScore = 0;
+        let totalInterviewScore = 0;
+        let count = 0;
+        
+        applications.forEach((app: any) => {
+          if (app.studentDetails?.profileScore !== undefined && app.studentDetails?.profileScore !== null) {
+            totalProfileScore += app.studentDetails.profileScore;
+            count++;
+          }
+          if (app.studentDetails?.interviewScore !== undefined && app.studentDetails?.interviewScore !== null) {
+            totalInterviewScore += app.studentDetails.interviewScore;
+          }
+        });
+        
+        const avgProfileScore = count > 0 ? totalProfileScore / count : null;
+        const avgInterviewScore = applications.length > 0 ? totalInterviewScore / applications.length : null;
+        
+        let combinedScore = null;
+        if (avgProfileScore !== null && avgInterviewScore !== null) {
+          combinedScore = (avgProfileScore * avgInterviewScore) / 100;
+        }
+        
+        setScores({
+          profileScore: avgProfileScore,
+          interviewScore: avgInterviewScore,
+          combinedScore: combinedScore
+        });
+      }
+    } catch (error) {
+      console.error('Error fetching scores:', error);
+    }
+  };
 
   const fetchProfile = async () => {
     try {
@@ -238,6 +287,97 @@ export function StudentProfilePage() {
                 </div>
               </div>
             )}
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Interview & Profile Scores */}
+      {scores && (scores.profileScore !== null || scores.interviewScore !== null) && (
+        <Card className="border-2 border-amber-200 bg-amber-50">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Award className="w-5 h-5 text-amber-600" />
+                <div>
+                  <CardTitle className="text-lg">Interview Performance</CardTitle>
+                  <CardDescription>Your scores from interviews and applications</CardDescription>
+                </div>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-4">
+              {/* Profile Score */}
+              {scores.profileScore !== null && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="bg-white p-4 rounded-lg border border-amber-200"
+                >
+                  <div className="text-sm font-medium text-muted-foreground mb-2">Profile Score</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-amber-600">
+                      {scores.profileScore.toFixed(1)}%
+                    </span>
+                  </div>
+                  <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-amber-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${scores.profileScore}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">Average compatibility score</p>
+                </motion.div>
+              )}
+
+              {/* Interview Score */}
+              {scores.interviewScore !== null && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1 }}
+                  className="bg-white p-4 rounded-lg border border-blue-200"
+                >
+                  <div className="text-sm font-medium text-muted-foreground mb-2">Interview Score</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-blue-600">
+                      {scores.interviewScore.toFixed(0)}/100
+                    </span>
+                  </div>
+                  <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min(scores.interviewScore, 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">Average interview performance</p>
+                </motion.div>
+              )}
+
+              {/* Combined Score */}
+              {scores.combinedScore !== null && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.2 }}
+                  className="bg-white p-4 rounded-lg border border-green-200"
+                >
+                  <div className="text-sm font-medium text-muted-foreground mb-2">Combined Score</div>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-3xl font-bold text-green-600">
+                      {scores.combinedScore.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="mt-2 w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full transition-all duration-300"
+                      style={{ width: `${Math.min((scores.combinedScore / 100) * 100, 100)}%` }}
+                    />
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-2">(Profile Score × Interview Score) / 100</p>
+                </motion.div>
+              )}
+            </div>
           </CardContent>
         </Card>
       )}

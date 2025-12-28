@@ -183,9 +183,21 @@ export const opportunitiesApi = {
     return response.data;
   },
 
-  // Apply for referral
+  // Apply for referral with interview scores
   applyForReferral: async (opportunityId: string): Promise<ApplicationResponse> => {
-    const response = await api.post('/apply', { opportunityId });
+    // Get scores from localStorage
+    const scoresData = localStorage.getItem('interviewScores');
+    const scores = scoresData ? JSON.parse(scoresData) : {};
+
+    const response = await api.post('/apply', {
+      opportunityId,
+      profileScore: scores.profileScore || null,
+      interviewScore: scores.interviewScore || null,
+    });
+
+    // Clear scores after use
+    localStorage.removeItem('interviewScores');
+
     return response.data;
   },
 

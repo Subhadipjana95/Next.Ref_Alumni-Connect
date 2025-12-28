@@ -11,6 +11,16 @@ const ApplicationSchema = new mongoose.Schema({
         ref: "Student",
         required: true,
     },
+    studentDetails: {
+        profileScore: {
+            type: Number,
+            default: null,
+        },
+        interviewScore: {
+            type: Number,
+            default: null,
+        },
+    },
     alumni: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Alumni",
@@ -23,15 +33,10 @@ const ApplicationSchema = new mongoose.Schema({
     },
     // Snapshot of student's resume at the time of application
     resumeSnapshot: {
-        url: {
-            type: String,
-        },
-        public_id: {
-            type: String,
-        },
-        uploadedAt: {
-            type: Date,
-        },
+        fileName: String,
+        fileSize: Number,
+        contentType: String,
+        uploadedAt: Date,
     },
     // Snapshot of key student profile info at application time
     profileSnapshot: {
