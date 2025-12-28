@@ -24,7 +24,8 @@ const allowedOrigins = [
   "http://127.0.0.1:8081",
   "http://127.0.0.1:5173",
   "http://172.26.38.74:8080",
-  "https://next-ref-alumni-connect.vercel.app"
+  "https://next-ref-alumni-connect.vercel.app",
+  "https://next-reff-alumni-connect.vercel.app"
 ]
 
 app.use(

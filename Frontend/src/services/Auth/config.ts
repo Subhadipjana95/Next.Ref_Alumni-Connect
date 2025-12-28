@@ -1,7 +1,7 @@
 // API Configuration
 
 // Base API URL - can be configured via environment variable
-export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:3000/api/v1";
+export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://next-ref-alumni-connect.onrender.com/api/v1";
 
 // Auth API endpoints
 export const AUTH_ENDPOINTS = {
