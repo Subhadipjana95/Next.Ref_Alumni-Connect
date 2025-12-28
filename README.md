@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="https://res.cloudinary.com/dfjuuwtr6/image/upload/v1766874786/Screenshot_2025-12-28_040242_g4dvlu.png" alt="NextRef Alumni Connect Banner" style="border-radius: 12px; width: 100%; border: 1px solid #3B4E45" />
+
 # 🎓 NextRef - Alumni Connect
 
 ### NextRef - Modern Alumni Referral Platform
@@ -12,7 +14,6 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb)](https://www.mongodb.com/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
-[Features](#-features) • [Architecture](#-architecture) • [Getting Started](#-getting-started) • [Smart Contract](#-smart-contract) • [Tech Stack](#-tech-stack)
 
 </div>
 
@@ -61,7 +62,7 @@ All interactions are managed through a secure REST API with JWT authentication, 
 
 ### 🎨 Modern User Experience
 - **Responsive Design** - Mobile-first, fully responsive UI
-- **Dark/Light Mode** - Customizable theme with next-themes
+- **Dark Mode** - Comfortable theming for enhanced eye comfort
 - **Smooth Animations** - Framer Motion powered interactions
 - **Lenis Smooth Scroll** - Buttery-smooth scrolling experience
 - **Toast Notifications** - Real-time transaction feedback with Sonner

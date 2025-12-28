@@ -111,13 +111,13 @@ export function OpportunitiesList({
                   {opportunity.requiredSkills.slice(0, 3).map((skill, index) => (
                     <span
                       key={index}
-                      className="inline-block px-2 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
+                      className="inline-block px-2 py-1 rounded-lg text-xs font-medium bg-primary/10 text-primary border border-primary/20"
                     >
                       {skill}
                     </span>
                   ))}
                   {opportunity.requiredSkills.length > 3 && (
-                    <span className="inline-block px-2 py-1 rounded-full text-xs font-medium bg-muted text-muted-foreground">
+                    <span className="inline-block px-2 py-1 rounded-lg text-xs font-medium bg-muted text-muted-foreground">
                       +{opportunity.requiredSkills.length - 3} more
                     </span>
                   )}
