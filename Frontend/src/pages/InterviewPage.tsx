@@ -4,6 +4,26 @@ import { interviewApi } from '@/services/interview';
 import { opportunitiesApi } from '@/services/opportunities';
 import { analyzeApi } from '@/services/analyze';
 import { useAuth } from '@/services/Auth/AuthContext';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+import {
+  Mic,
+  MicOff,
+  Phone,
+  PhoneOff,
+  Volume2,
+  VolumeX,
+  Sparkles,
+  TrendingUp,
+  Award,
+  ArrowLeft,
+  CheckCircle2,
+  AlertCircle,
+  Building2,
+  Briefcase,
+  Loader2,
+} from 'lucide-react';
+import { showToast } from '@/components/TransactionToast';
 
 interface ConversationSession {
   startSession: (config: any) => Promise<any>;
@@ -488,150 +508,288 @@ export default function InterviewPage() {
 
   if (isLoading) {
     return (
-      <div style={{ padding: '20px', fontFamily: 'monospace' }}>
-        <h1>AI Interview Session</h1>
-        <p>Loading opportunity details...</p>
+      <div className="fixed inset-0 bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <Loader2 className="w-12 h-12 animate-spin text-primary mx-auto" />
+          <p className="text-muted-foreground">Loading interview session...</p>
+        </div>
       </div>
     );
   }
 
   if (!opportunityData) {
     return (
-      <div style={{ padding: '20px', fontFamily: 'monospace' }}>
-        <h1>AI Interview Session</h1>
-        <p style={{ color: 'red' }}>Error: Could not load opportunity details</p>
+      <div className="fixed inset-0 bg-background flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <AlertCircle className="w-16 h-16 text-destructive mx-auto" />
+          <h2 className="text-2xl font-semibold text-foreground">Error</h2>
+          <p className="text-muted-foreground">Could not load opportunity details</p>
+          <Button onClick={() => navigate(-1)} variant="outline">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Go Back
+          </Button>
+        </div>
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'monospace' }}>
-      <h1>AI Interview Session</h1>
-      <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#f0f0f0', borderRadius: '4px' }}>
-        <p><strong>Position:</strong> {opportunityData.jobTitle}</p>
-        <p><strong>Company:</strong> {opportunityData.postedBy.company}</p>
+    <div className="fixed inset-0 pt-20 bg-gradient-to-b from-background via-background to-background/95 flex flex-col overflow-hidden p-4">
+      {/* Header with Back Button */}
+      <div className="relative z-10 bg-card/80 backdrop-blur-xl px-2 sm:px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => navigate(-1)}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+          </Button>
+          <div className="flex-1">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-2 leading-tight text-foreground">
+            <span className="gradient-text2">AI </span>
+            Interview
+            <span className="gradient-text3"> Session</span>
+          </h1>
+          </div>
+        </div>
       </div>
 
-      {profileScore !== null && (
-        <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#e8f5e9', borderRadius: '4px', border: '1px solid #4CAF50' }}>
-          <p><strong>Profile Score:</strong> {profileScore.toFixed(2)}%</p>
-        </div>
-      )}
+      {/* Main Content Area - 3 Column Layout */}
+      <div className="flex-1 flex gap-3 p-6 relative overflow-hidden border rounded-2xl">
+        {/* Background gradient effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-primary/10" />
+        
+        {/* Left Column - Job Info & Score Cards */}
+        <div className="relative w-96 flex-shrink-0 space-y-4">
+          {/* Opportunity Info Card */}
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-xl p-6">
+            <div className="flex items-start gap-3 mb-4">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Building2 className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-muted-foreground mb-1">Position</p>
+                <p className="text-lg font-semibold text-foreground leading-tight">{opportunityData.jobTitle}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
+                <Briefcase className="w-5 h-5 text-primary" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-muted-foreground mb-1">Company</p>
+                <p className="text-base font-medium text-foreground">{opportunityData.postedBy.company}</p>
+              </div>
+            </div>
+          </div>
 
-      {interviewScore !== null && (
-        <div style={{ marginBottom: '20px', padding: '10px', backgroundColor: '#e3f2fd', borderRadius: '4px', border: '1px solid #2196F3' }}>
-          <p><strong>Interview Score:</strong> {interviewScore}</p>
+          {/* Score Cards */}
+          {(profileScore !== null || interviewScore !== null) && (
+            <div className="space-y-4">
+              {profileScore !== null && (
+                <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-4 shadow-lg">
+                  <div className="flex items-center gap-3 mb-2">
+                    <TrendingUp className="w-5 h-5 text-primary" />
+                    <p className="text-sm font-medium text-muted-foreground">Profile Match</p>
+                  </div>
+                  <p className="text-4xl font-bold text-primary">{profileScore.toFixed(1)}%</p>
+                  <p className="text-xs text-muted-foreground mt-2">Compatibility Score</p>
+                </div>
+              )}
+              
+              {interviewScore !== null && (
+                <div className="bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl p-4 shadow-lg">
+                  <div className="flex items-center gap-3 mb-2">
+                    <Award className="w-5 h-5 text-primary" />
+                    <p className="text-sm font-medium text-muted-foreground">Interview Score</p>
+                  </div>
+                  <p className="text-4xl font-bold text-primary">{interviewScore}</p>
+                  <p className="text-xs text-muted-foreground mt-2">Performance Rating</p>
+                </div>
+              )}
+            </div>
+          )}
         </div>
-      )}
 
-      <div style={{ marginBottom: '20px' }}>
-        {profileScore === null ? (
-          <button
-            onClick={analyzeProfile}
-            disabled={isAnalyzing}
-            style={{
-              padding: '10px 20px',
-              marginRight: '10px',
-              backgroundColor: '#2196F3',
-              color: 'white',
-              cursor: isAnalyzing ? 'not-allowed' : 'pointer',
-              opacity: isAnalyzing ? 0.5 : 1,
-              borderRadius: '4px',
-              border: 'none',
-            }}
-          >
-            {isAnalyzing ? 'Analyzing Profile...' : 'Step 1: Analyze Profile'}
-          </button>
-        ) : (
-          <>
-            <button
-              onClick={startInterview}
-              disabled={isConversationActive}
-              style={{
-                padding: '10px 20px',
-                marginRight: '10px',
-                backgroundColor: '#4CAF50',
-                color: 'white',
-                cursor: isConversationActive ? 'not-allowed' : 'pointer',
-                opacity: isConversationActive ? 0.5 : 1,
-                borderRadius: '4px',
-                border: 'none',
-              }}
-            >
-              Step 2: Start Interview
-            </button>
-            {localStorage.getItem('analysisSkipped') === 'true' && (
-              <button
-                onClick={() => {
-                  localStorage.removeItem('analysisSkipped');
-                  setProfileScore(null);
-                  setInterviewScore(null);
-                  analyzeProfile();
-                }}
-                style={{
-                  padding: '10px 20px',
-                  marginRight: '10px',
-                  backgroundColor: '#FF9800',
-                  color: 'white',
-                  cursor: 'pointer',
-                  borderRadius: '4px',
-                  border: 'none',
-                  fontSize: '12px',
-                }}
-                title="Retry analysis when API is available"
+        {/* Center Column - AI Avatar & Controls */}
+        <div className="relative flex-1 flex flex-col items-center justify-center">
+          {/* AI Avatar Section */}
+          <div className="relative mb-8 flex justify-center">
+            <div className="relative">
+              {/* Animated rings for active call */}
+              {isConversationActive && (
+                <>
+                  <div className="absolute inset-0 rounded-full border-4 border-primary/30 animate-ping" />
+                  <div className="absolute inset-0 rounded-full border-4 border-primary/20 animate-pulse" style={{ animationDelay: '0.5s' }} />
+                </>
+              )}
+              
+              {/* Main Avatar Circle */}
+              <div
+                className={cn(
+                  'relative w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-full flex items-center justify-center',
+                  'bg-gradient-to-br from-primary/20 to-primary/5 border-8 border-primary/40 shadow-2xl',
+                  'transition-all duration-500',
+                  isConversationActive && 'scale-110 border-primary/60'
+                )}
               >
-                Retry Analysis
-              </button>
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-transparent rounded-full" />
+                <Sparkles className="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 text-primary relative z-10 drop-shadow-2xl" />
+              </div>
+
+              {/* Status Badge */}
+              <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 px-6 py-2 bg-card/95 backdrop-blur-sm border border-border rounded-full shadow-lg">
+                <p className="text-sm font-semibold text-foreground whitespace-nowrap">
+                  {isAnalyzing ? (
+                    <>Analyzing Profile...</>
+                  ) : profileScore === null ? (
+                    <>Ready to Start</>
+                  ) : isConversationActive ? (
+                    <>Interview in Progress</>
+                  ) : interviewCompleted ? (
+                    <>Interview Complete</>
+                  ) : (
+                    <>Ready for Interview</>
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Action Buttons - Call Controls Style */}
+          <div className="flex items-center justify-center gap-4 mb-8">
+            {profileScore === null ? (
+              <Button
+                onClick={analyzeProfile}
+                disabled={isAnalyzing}
+                size="lg"
+                className="rounded-full w-16 h-16 sm:w-20 sm:h-20 p-0 shadow-xl bg-primary hover:bg-primary/90"
+              >
+                {isAnalyzing ? (
+                  <Loader2 className="w-8 h-8 sm:w-10 sm:h-10 animate-spin" />
+                ) : (
+                  <Sparkles className="w-8 h-8 sm:w-10 sm:h-10" />
+                )}
+              </Button>
+            ) : (
+              <>
+                {!isConversationActive && !interviewCompleted && (
+                  <Button
+                    onClick={startInterview}
+                    size="lg"
+                    className="rounded-full w-16 h-16 sm:w-20 sm:h-20 p-0 shadow-xl bg-success hover:bg-success/90"
+                  >
+                    <Phone className="w-8 h-8 sm:w-10 sm:h-10" />
+                  </Button>
+                )}
+                
+                {isConversationActive && (
+                  <Button
+                    onClick={stopInterview}
+                    size="lg"
+                    variant="destructive"
+                    className="rounded-full w-16 h-16 sm:w-20 sm:h-20 p-0 shadow-xl animate-pulse"
+                  >
+                    <PhoneOff className="w-8 h-8 sm:w-10 sm:h-10" />
+                  </Button>
+                )}
+              </>
             )}
-            <button
-              onClick={stopInterview}
-              disabled={!isConversationActive}
-              style={{
-                padding: '10px 20px',
-                marginRight: '10px',
-                cursor: !isConversationActive ? 'not-allowed' : 'pointer',
-                opacity: !isConversationActive ? 0.5 : 1,
-                backgroundColor: '#f44336',
-                color: 'white',
-                borderRadius: '4px',
-                border: 'none',
+          </div>
+
+          {/* Apply Button - Shows after completion */}
+          {interviewCompleted && (
+            <div className="text-center">
+              <Button
+                onClick={handleApplyAfterInterview}
+                size="lg"
+                className="px-8 py-6 text-lg shadow-xl"
+              >
+                <CheckCircle2 className="w-6 h-6 mr-2" />
+                Apply for Referral
+              </Button>
+            </div>
+          )}
+
+          {/* Helper Text */}
+          <div className="text-center mt-8">
+            <p className="text-sm text-muted-foreground">
+              {profileScore === null ? (
+                <>Click the sparkle icon to analyze your profile</>
+              ) : !isConversationActive && !interviewCompleted ? (
+                <>Click the phone icon to start your AI interview</>
+              ) : isConversationActive ? (
+                <>Microphone is active. Speak clearly and confidently.</>
+              ) : interviewCompleted ? (
+                <>Great job! Review your scores and apply for the referral.</>
+              ) : null}
+            </p>
+          </div>
+        </div>
+
+        {/* Right Column - Session Logs */}
+        <div className="relative w-[28rem] flex-shrink-0">
+          <div className="bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 shadow-xl h-full flex flex-col">
+            {/* Console Header */}
+            <div className="flex items-center justify-between p-4 border-b border-border/50">
+              <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+                Session Logs
+              </h3>
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setLogs([])}
+                className="text-xs h-7"
+              >
+                Clear
+              </Button>
+            </div>
+
+            {/* Logs Container - Scrollable without visible scrollbar */}
+            <div 
+              className="flex-1 min-h-0 p-4 font-mono text-xs space-y-1"
+              style={{ 
+                overflowY: 'scroll',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none'
+              }}
+              onWheel={(e) => {
+                const element = e.currentTarget;
+                element.scrollTop += e.deltaY;
               }}
             >
-              Stop Interview
-            </button>
-          </>
-        )}
-        {interviewCompleted && (
-          <button
-            onClick={handleApplyAfterInterview}
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#4CAF50',
-              color: 'white',
-              cursor: 'pointer',
-              borderRadius: '4px',
-              border: 'none',
-            }}
-          >
-            Step 3: Apply for Referral
-          </button>
-        )}
-      </div>
-
-      <div
-        style={{
-          border: '1px solid #ccc',
-          padding: '10px',
-          height: '400px',
-          overflowY: 'auto',
-          backgroundColor: '#f5f5f5',
-          whiteSpace: 'pre-wrap',
-          wordWrap: 'break-word',
-        }}
-      >
-        {logs.map((log, idx) => (
-          <div key={idx}>{log}</div>
-        ))}
+              <style>{`
+                div::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
+              {logs.length === 0 ? (
+                <p className="text-muted-foreground italic">No logs yet...</p>
+              ) : (
+                logs.map((log, idx) => (
+                  <div
+                    key={idx}
+                    className={cn(
+                      'transition-opacity',
+                      log.includes('Error') || log.includes('❌')
+                        ? 'text-destructive'
+                        : log.includes('✓') || log.includes('✅')
+                        ? 'text-success'
+                        : log.includes('⚠') || log.includes('Note')
+                        ? 'text-warning'
+                        : 'text-muted-foreground'
+                    )}
+                  >
+                    {log}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
