@@ -325,7 +325,7 @@ export default function InterviewPage() {
           addLog(`✓ Profile Analysis Complete`);
           addLog(`✓ Profile Score: ${score.toFixed(2)}%`);
           
-          if (analyzeResponse.note) {
+          if ('note' in analyzeResponse && analyzeResponse.note) {
             addLog(`ℹ️ ${analyzeResponse.note}`);
           }
           

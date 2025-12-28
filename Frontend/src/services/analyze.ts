@@ -12,6 +12,7 @@ export interface AnalyzePayload {
 }
 
 export interface AnalyzeResponse {
+  note: any;
   status: string;
   data: {
     key_aaskills: { [key: string]: number };
