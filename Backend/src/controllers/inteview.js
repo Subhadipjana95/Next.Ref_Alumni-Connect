@@ -24,41 +24,61 @@ exports.getSignedUrl = async (req, res) => {
 
         console.log("Fetching signed URL from ElevenLabs API with AGENT_ID:", AGENT_ID);
 
-        // Fetch signed URL from ElevenLabs API
-        const response = await fetch(
-            `https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=${AGENT_ID}`,
-            {
-                headers: {
-                    "xi-api-key": ELEVENLABS_API_KEY,
-                },
+        // Fetch signed URL from ElevenLabs API with timeout
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+        try {
+            const response = await fetch(
+                `https://api.elevenlabs.io/v1/convai/conversation/get-signed-url?agent_id=${AGENT_ID}`,
+                {
+                    headers: {
+                        "xi-api-key": ELEVENLABS_API_KEY,
+                    },
+                    signal: controller.signal,
+                }
+            );
+
+            clearTimeout(timeout);
+
+            console.log("ElevenLabs API response status:", response.status);
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("ElevenLabs API error:", errorText);
+                return res.status(500).json({
+                    success: false,
+                    message: "Failed to get signed URL from ElevenLabs",
+                    error: errorText,
+                });
             }
-        );
 
-        console.log("ElevenLabs API response status:", response.status);
+            const data = await response.json();
+            console.log("Successfully got signed URL");
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error("ElevenLabs API error:", errorText);
-            return res.status(500).json({
-                success: false,
-                message: "Failed to get signed URL from ElevenLabs",
+            return res.status(200).json({
+                success: true,
+                signedUrl: data.signed_url,
+                message: "Signed URL generated successfully",
             });
+        } catch (fetchError) {
+            clearTimeout(timeout);
+            if (fetchError.name === 'AbortError') {
+                console.error("Request timeout");
+                return res.status(504).json({
+                    success: false,
+                    message: "Request timeout. Please try again.",
+                });
+            }
+            throw fetchError;
         }
-
-        const data = await response.json();
-        console.log("Successfully got signed URL");
-
-        return res.status(200).json({
-            success: true,
-            signedUrl: data.signed_url,
-            message: "Signed URL generated successfully",
-        });
 
     } catch (error) {
         console.error("Get signed URL error:", error);
         return res.status(500).json({
             success: false,
             message: "Failed to get signed URL. Please try again.",
+            error: error.message,
         });
     }
 }

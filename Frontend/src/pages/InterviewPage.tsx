@@ -429,8 +429,15 @@ export default function InterviewPage() {
       setIsConversationActive(true);
       addLog('Conversation started. Microphone access required.');
 
+      // Enhanced status monitoring
       conversationRef.current.onStatusChange = (status: string) => {
         addLog(`[Status] ${status}`);
+        
+        // Handle disconnection/interruption
+        if (status === 'disconnected' || status === 'error') {
+          addLog('Connection interrupted. Attempting to reconnect...');
+          handleReconnection();
+        }
       };
 
       conversationRef.current.onTranscript = (transcript: { from: string; text: string }) => {
@@ -439,7 +446,18 @@ export default function InterviewPage() {
 
       conversationRef.current.onError = (error: Error) => {
         addLog(`[Error] ${error.message}`);
+        addLog('Attempting to recover connection...');
+        handleReconnection();
       };
+
+      // Handle network errors
+      conversationRef.current.onDisconnect = () => {
+        addLog('[Disconnected] Connection lost. Attempting to reconnect...');
+        if (isConversationActive) {
+          handleReconnection();
+        }
+      };
+
     } catch (error) {
       const err = error as Error;
       addLog(`Error: ${err.message}`);
@@ -448,11 +466,45 @@ export default function InterviewPage() {
     }
   };
 
+  // Add reconnection handler
+  const handleReconnection = async () => {
+    try {
+      if (!conversationRef.current || !isConversationActive) return;
+
+      addLog('Reconnecting...');
+      
+      // Wait a bit before reconnecting
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Try to resume the conversation
+      if (conversationRef.current.reconnect) {
+        await conversationRef.current.reconnect();
+        addLog('✓ Reconnected successfully');
+      } else {
+        addLog('Manual reconnection required. Please restart the interview.');
+        setIsConversationActive(false);
+      }
+    } catch (error) {
+      const err = error as Error;
+      addLog(`Reconnection failed: ${err.message}`);
+      addLog('Please restart the interview');
+      setIsConversationActive(false);
+    }
+  };
+
   const stopInterview = async () => {
     try {
       if (conversationRef.current) {
         addLog('Ending conversation...');
-        await conversationRef.current.endSession();
+        
+        // Gracefully end session
+        try {
+          await conversationRef.current.endSession();
+        } catch (endError) {
+          console.error('Error ending session:', endError);
+          // Continue anyway
+        }
+        
         setIsConversationActive(false);
         
         // Generate interview score (0-100)
@@ -467,6 +519,8 @@ export default function InterviewPage() {
       const err = error as Error;
       addLog(`Error ending conversation: ${err.message}`);
       console.error('Stop interview error:', error);
+      // Force stop anyway
+      setIsConversationActive(false);
     }
   };
 
