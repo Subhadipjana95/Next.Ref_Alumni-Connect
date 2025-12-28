@@ -62,6 +62,7 @@ const alumniProfileRoutes = require("./routes/AlumniProfileRoutes");
 const opportunityRoutes = require("./routes/OpportunityRoutes");
 const applicationRoutes = require("./routes/ApplicationRoutes");
 const externalJobRoutes = require("./routes/ExternalJobRoutes");
+const interviewRoutes = require("./routes/InterviewRoutes");
 
 // Health check endpoint
 app.get("/", (req, res) => {
@@ -83,6 +84,7 @@ app.use("/api/v1/alumni", alumniProfileRoutes);
 app.use("/api/v1", opportunityRoutes);
 app.use("/api/v1", applicationRoutes);
 app.use("/api/v1/student", externalJobRoutes);
+app.use("/api/v1", interviewRoutes);
 
 
 

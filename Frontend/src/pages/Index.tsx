@@ -4,6 +4,7 @@ import About from '@/pages/About';
 import { StudentDashboard } from '@/pages/StudentDashboard';
 import { AlumniDashboard } from '@/pages/AlumniDashboard';
 import { VerifierDashboard } from '@/pages/VerifierDashboard';
+import InterviewPage from '@/pages/InterviewPage';
 import NotFound from '@/pages/NotFound';
 import { RoleSelector } from '@/pages/RoleSelector';
 import Navbar from '@/components/Navbar';
@@ -136,6 +137,18 @@ function AppContent() {
             <ProtectedRoute requiredRole="student">
               <DashboardLayout>
                 <StudentDashboard />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Interview Page */}
+        <Route
+          path="/student/interview"
+          element={
+            <ProtectedRoute requiredRole="student">
+              <DashboardLayout>
+                <InterviewPage />
               </DashboardLayout>
             </ProtectedRoute>
           }
