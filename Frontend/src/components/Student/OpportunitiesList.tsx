@@ -1,5 +1,6 @@
 import { Opportunity } from '@/services/opportunities';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
 import {
   Users,
   CheckCircle,
@@ -31,6 +32,12 @@ export function OpportunitiesList({
   onViewDetails,
   canApply = true 
 }: OpportunitiesListProps) {
+  const navigate = useNavigate();
+
+  const handleApplyClick = (opportunityId: string) => {
+    // Redirect to interview page with opportunity ID
+    navigate(`/student/interview?opportunityId=${opportunityId}`);
+  };
   
   if (loading) {
     return (
@@ -182,21 +189,12 @@ export function OpportunitiesList({
               ) : (
                 <Button
                   variant="default"
-                  onClick={() => onApply(opportunity._id)}
-                  disabled={!canApply || isApplying === opportunity._id}
+                  onClick={() => handleApplyClick(opportunity._id)}
+                  disabled={!canApply}
                   className='w-full bg-primary text-background hover:bg-primary/90'
                 >
-                  {isApplying === opportunity._id ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Applying...
-                    </>
-                  ) : (
-                    <>
-                      <Users className="w-4 h-4 mr-2" />
-                      Apply for Referral
-                    </>
-                  )}
+                  <Users className="w-4 h-4 mr-2" />
+                  Start Interview
                 </Button>
               )}
             </div>
