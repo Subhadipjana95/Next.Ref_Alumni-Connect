@@ -9,17 +9,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 const features = [
   {
-    image: "/F1.png",
+    image: "/F1.webp",
     title: "Verified Credentials",
     description: "Resume authenticity verified by College Authority",
   },
   {
-    image: "/F2.png",
+    image: "/F2.webp",
     title: "Transparent Hiring",
     description: "Every action recorded with immutable proof",
   },
   {
-    image: "/F3.png",
+    image: "/F3.webp",
     title: "Trust Network",
     description: "Connect with verified alumni for referrals",
   },
@@ -116,7 +116,7 @@ const Features = React.memo(() => {
     >
       <img 
         ref={bgImageRef}
-        src="/Side-BG2.png" 
+        src="/Side-BG2.webp" 
         alt="Background decoration"
         className="absolute -bottom-[100%] left-[65%] pointer-events-none z-0 hidden lg:block"
         loading="lazy"

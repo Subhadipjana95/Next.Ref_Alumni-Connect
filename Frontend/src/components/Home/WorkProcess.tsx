@@ -94,7 +94,7 @@ const WorkProcess = React.memo(() => {
       className="rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mb-16 sm:mb-20 relative overflow-visible"
     >      
     <img 
-        src="/Side-BG3.png" 
+        src="/Side-BG3.webp" 
         alt="Background decoration"
         className="absolute right-[55rem] top-[55%] -translate-y-1/2 pointer-events-none z-0 hidden xl:block"
         loading="lazy"
@@ -121,7 +121,7 @@ const WorkProcess = React.memo(() => {
         <div className="process1 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:h-[28rem]">
           <div className="w-full max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-[32rem] aspect-[4/5] lg:aspect-auto lg:h-full rounded-lg relative overflow-hidden flex justify-center lg:justify-end items-center lg:ml-6 xl:ml-12 order-1">
             <img
-              src={"/W1.png"}
+              src={"/W1.webp"}
               alt={"Student Build Profile and Upload Resume"}
               loading="lazy"
               decoding="async"
@@ -199,7 +199,7 @@ const WorkProcess = React.memo(() => {
           </div>
           <div className="w-full max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-[32rem] aspect-[4/5] lg:aspect-auto lg:h-full relative overflow-hidden flex justify-center items-center border rounded-xl order-1 lg:order-2">
             <img
-              src="/W2.png"
+              src="/W2.webp"
               alt="Verifier Approves and Verifies Credentials"
               loading="lazy"
               decoding="async"
@@ -239,7 +239,7 @@ const WorkProcess = React.memo(() => {
         <div className="process3 grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:h-[28rem]">
           <div className="w-full max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-[32rem] aspect-[4/5] lg:aspect-auto lg:h-full rounded-lg relative overflow-hidden flex justify-center lg:justify-end items-center lg:ml-6 xl:ml-12 order-1">
             <img
-              src="/W3.png"
+              src="/W3.webp"
               alt="Alumni Refers Based on Verified Credentials"
               loading="lazy"
               decoding="async"
