@@ -94,7 +94,7 @@ const WorkProcess = React.memo(() => {
       className="rounded-xl sm:rounded-2xl p-4 sm:p-6 md:p-8 mb-16 sm:mb-20 relative overflow-visible"
     >      
     <img 
-        src="/Side-BG3.webp" 
+        src="/Side-BG3.png" 
         alt="Background decoration"
         className="absolute right-[55rem] top-[55%] -translate-y-1/2 pointer-events-none z-0 hidden xl:block"
         loading="lazy"

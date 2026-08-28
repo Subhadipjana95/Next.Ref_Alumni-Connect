@@ -204,7 +204,7 @@ const LandingHero = React.memo(() => {
         >
           <div className="w-full h-full rounded-lg sm:rounded-xl overflow-hidden border-[1px] border-background/20 bg-background">
             <img
-              src={theme === "dark" ? "/P1.webp" : "/P2.png"}
+              src={theme === "dark" ? "/P1.png" : "/P2.png"}
               alt="Product Preview"
               loading="eager"
               decoding="async"
