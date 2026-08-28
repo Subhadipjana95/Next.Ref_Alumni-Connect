@@ -195,7 +195,7 @@ const LandingHero = React.memo(() => {
 
       <div
         ref={lowerHeroRef}
-        className="lowerHero w-screen relative left-[50%] right-[50%] -mx-[50vw] bg-[url(/Gradient-bg.webp)] bg-no-repeat bg-cover bg-center min-h-[400px] sm:min-h-[500px] md:min-h-[650px] lg:min-h-[750px] px-4 sm:px-8 md:px-16 lg:px-24 pb-0 flex items-end"
+        className="lowerHero w-screen relative left-[50%] right-[50%] -mx-[50vw] bg-[url(/Gradient-bg.png)] bg-no-repeat bg-cover bg-center min-h-[400px] sm:min-h-[500px] md:min-h-[650px] lg:min-h-[750px] px-4 sm:px-8 md:px-16 lg:px-24 pb-0 flex items-end"
         style={{ opacity: 0 }}
       >
         <div
@@ -204,7 +204,7 @@ const LandingHero = React.memo(() => {
         >
           <div className="w-full h-full rounded-lg sm:rounded-xl overflow-hidden border-[1px] border-background/20 bg-background">
             <img
-              src={theme === "dark" ? "/P1.png" : "/P2.png"}
+              src={theme === "dark" ? "/P1.webp" : "/P2.png"}
               alt="Product Preview"
               loading="eager"
               decoding="async"
